@@ -1,1 +1,608 @@
-print("works")
+local GamePlaceId = game.PlaceId  -- Get the current game's PlaceId
+
+-- Replace with the actual PlaceId of the game you want to check
+local AllowedGamePlaceId = 
+17339536356
+
+if GamePlaceId == AllowedGamePlaceId then
+  -- This is the correct game, continue with your script
+  game.StarterGui:SetCore("SendNotification", {
+      Title = "SCRIPT LOADING!",
+      Text = "THX FOR USING OUR SCRIPT",
+      Duration = 1
+    })
+else
+  -- Wrong game, do something like warn the player and stop execution
+
+game.Players.LocalPlayer:Kick("This is not the correct game,we just Support 2 games SL2 and street life thx for using our script more games SOON join the discord server lov")
+  return
+end
+
+--Create a ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "LoadingScreen"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create an ImageLabel for the background image
+local backgroundImage = Instance.new("ImageLabel")
+backgroundImage.Size = UDim2.new(1, 0, 1, 0)
+backgroundImage.BackgroundTransparency = 1  -- Make the background transparent
+backgroundImage.Image = "rbxassetid://18742257364"  -- Replace with your background image asset ID
+backgroundImage.Parent = screenGui
+
+-- Create an ImageLabel for the loading text
+local loadingTextImage = Instance.new("ImageLabel")
+loadingTextImage.Size = UDim2.new(0, 200, 0, 50)
+loadingTextImage.Position = UDim2.new(0.5, -100, 0.5, -100)
+loadingTextImage.BackgroundTransparency = 1  -- Make the background transparent
+loadingTextImage.Image = "rbxassetid://18742257364"  -- Replace with your loading text image asset ID
+loadingTextImage.Parent = backgroundImage
+
+-- Create a Frame for the loading bar
+local loadingBarFrame = Instance.new("Frame")
+loadingBarFrame.Size = UDim2.new(0.5, 0, 0, 50)
+loadingBarFrame.Position = UDim2.new(0.25, 0, 0.6, 0)
+loadingBarFrame.BackgroundColor3 = Color3.new(0.5, 0.5, 0.5)
+loadingBarFrame.BorderSizePixel = 0
+loadingBarFrame.Parent = backgroundImage
+
+local loadingBar = Instance.new("Frame")
+loadingBar.Size = UDim2.new(0, 0, 1, 0)
+loadingBar.BackgroundColor3 = Color3.new(0, 1, 0)
+loadingBar.Parent = loadingBarFrame
+
+local loadingPercentage = Instance.new("TextLabel")
+loadingPercentage.Size = UDim2.new(1, 0, 1, 0)
+loadingPercentage.BackgroundTransparency = 1
+loadingPercentage.TextColor3 = Color3.new(1, 1, 1)
+loadingPercentage.TextScaled = true
+loadingPercentage.Text = "0%"
+loadingPercentage.Parent = loadingBar
+
+-- Create a Sound instance
+local loadingSound = Instance.new("Sound")
+loadingSound.SoundId = "rbxassetid://"  -- Replace with your sound asset ID
+loadingSound.Volume = 0.5
+loadingSound.Looped = true
+loadingSound.Parent = screenGui
+
+-- Function to update the loading bar
+local function updateLoadingBar(progress)
+    loadingBar.Size = UDim2.new(progress, 0, 1, 0)
+    loadingPercentage.Text = math.floor(progress * 100) .. "%"
+end
+
+-- Function to simulate loading process
+local function simulateLoading()
+    loadingSound:Play()  -- Play the loading sound
+    for i = 1, 150 do
+        wait(0.05)
+        updateLoadingBar(i / 150)
+    end
+    loadingSound:Stop()  -- Stop the loading sound
+    -- Remove the loading screen once loading is complete
+    screenGui:Destroy()
+end
+
+simulateLoading()
+
+
+
+
+
+
+
+
+
+-- Rest of your script logic goes here
+local SolarLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/xurel7/Solar-Library/main/src.lua'))()
+
+local UI = SolarLib:Create {
+  Name = "VARTOLI STREETLIFE ", -- This will be the name of your script that users will see. This will also be your config file name if config is enabled.
+  GameName = "STREET LIFE", -- This is pointless unless you are making a script hub and have configs enabled, this will just make a config file with that name. If you delete this, the GameName will automatically be assigned as the games PlaceId.
+  SaveData = false -- Enabling this will enable configs (AKA UI SAVES). Everything gets automatically updated when data needs to be updated. Delete if you dont want data to save. (DATA WILL ONLY SAVE IF EXECUTOR SUPPORTS FILESYSTEM)
+}
+
+
+local Page1 = UI:CreatePage { -- Make sure to assign a new variable name for each page you create.
+  Name = "PLAYER" -- The name of the page.
+}
+
+
+Page1:CreateToggle {
+  Name = "ESP NAME", -- The name of your toggle.
+  Flag = nil, -- You can leave nil or simply delete if you dont have multiple elements with the same name or your UI doesnt save. If you have multiple elements with the same name, make sure to give each one a different flag as it will cause save overlapping if you dont.
+  Callback = function ()
+    -- You would put the code you want to be looped here.
+        --[[
+  WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+--//Toggle\\--
+getgenv().Toggle = true -- This toggles the esp, turning it to false will turn it off
+getgenv().TC = false -- This toggles team check, turning it on will turn on team check
+local PlayerName = "Name" -- You can decide if you want the Player's name to be a display name which is "DisplayName", or username which is "Name"
+
+--//Variables\\--
+local P = game:GetService("Players")
+local LP = P.LocalPlayer
+
+--//Debounce\\--
+local DB = false
+
+--//Notification\\--
+game.StarterGui:SetCore("SendNotification", {
+  Title = "ESPNAME SCRIPT LOADING...",
+  Text = "MADE BY OZ " ,
+  Button1 = "YEA SHUT UP",
+  Duration = 3.5
+})
+
+--//Loop\\--
+while task.wait() do
+  if not getgenv().Toggle then
+    break
+  end
+  if DB then 
+    return 
+  end
+  DB = true
+
+  pcall(function()
+    for i,v in pairs(P:GetChildren()) do
+      if v:IsA("Player") then
+        if v ~= LP then
+          if v.Character then
+
+            local pos = math.floor(((LP.Character:FindFirstChild("HumanoidRootPart")).Position - (v.Character:FindFirstChild("HumanoidRootPart")).Position).magnitude)
+            -- Credits to Infinite Yield for this part (pos) ^^^^^^
+
+            if v.Character:FindFirstChild("Totally NOT Esp") == nil and v.Character:FindFirstChild("Icon") == nil and getgenv().TC == false then
+              --//ESP-Highlight\\--
+              local ESP = Instance.new("Highlight", v.Character)
+
+              ESP.Name = "Totally NOT Esp"
+              ESP.Adornee = v.Character
+              ESP.Archivable = true
+              ESP.Enabled = true
+              ESP.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+              ESP.FillColor = v.TeamColor.Color
+              ESP.FillTransparency = 0.5
+              ESP.OutlineColor = Color3.fromRGB(255, 255, 255)
+              ESP.OutlineTransparency = 0
+
+              --//ESP-Text\\--
+              local Icon = Instance.new("BillboardGui", v.Character)
+              local ESPText = Instance.new("TextLabel")
+
+              Icon.Name = "Icon"
+              Icon.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+              Icon.Active = true
+              Icon.AlwaysOnTop = true
+              Icon.ExtentsOffset = Vector3.new(0, 1, 0)
+              Icon.LightInfluence = 1.000
+              Icon.Size = UDim2.new(0, 800, 0, 50)
+
+              ESPText.Name = "ESP Text"
+              ESPText.Parent = Icon
+              ESPText.BackgroundColor3 = v.TeamColor.Color
+              ESPText.BackgroundTransparency = 1.000
+              ESPText.Size = UDim2.new(0, 800, 0, 50)
+              ESPText.Font = Enum.Font.SciFi
+              ESPText.Text = v[PlayerName].." | Distance: "..pos
+              ESPText.TextColor3 = v.TeamColor.Color
+              ESPText.TextSize = 10.800
+              ESPText.TextWrapped = true
+            else
+              if v.TeamColor ~= LP.TeamColor and v.Character:FindFirstChild("Totally NOT Esp") == nil and v.Character:FindFirstChild("Icon") == nil and getgenv().TC == true then
+                --//ESP-Highlight\\--
+                local ESP = Instance.new("Highlight", v.Character)
+
+                ESP.Name = "Totally NOT Esp"
+                ESP.Adornee = v.Character
+                ESP.Archivable = true
+                ESP.Enabled = true
+                ESP.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+                ESP.FillColor = v.TeamColor.Color
+                ESP.FillTransparency = 0.5
+                ESP.OutlineColor = Color3.fromRGB(255, 255, 255)
+                ESP.OutlineTransparency = 0
+
+                --//ESP-Text\\--
+                local Icon = Instance.new("BillboardGui", v.Character)
+                local ESPText = Instance.new("TextLabel")
+
+                Icon.Name = "Icon"
+                Icon.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+                Icon.Active = true
+                Icon.AlwaysOnTop = true
+                Icon.ExtentsOffset = Vector3.new(0, 1, 0)
+                Icon.LightInfluence = 1.000
+                Icon.Size = UDim2.new(0, 800, 0, 50)
+
+                ESPText.Name = "ESP Text"
+                ESPText.Parent = Icon
+                ESPText.BackgroundColor3 = v.TeamColor.Color
+                ESPText.BackgroundTransparency = 1.000
+                ESPText.Size = UDim2.new(0, 800, 0, 50)
+                ESPText.Font = Enum.Font.SciFi
+                ESPText.Text = v[PlayerName].." | Distance: "..pos
+                ESPText.TextColor3 = v.TeamColor.Color
+                ESPText.TextSize = 10.800
+                ESPText.TextWrapped = true
+              else
+                if not v.Character:FindFirstChild("Totally NOT Esp").FillColor == v.TeamColor.Color and not v.Character:FindFirstChild("Icon").TextColor3 == v.TeamColor.Color then
+                  v.Character:FindFirstChild("Totally NOT Esp").FillColor = v.TeamColor.Color
+                  v.Character:FindFirstChild("Icon").TextColor3 = v.TeamColor.Color
+                else
+                  if v.Character:FindFirstChild("Totally NOT Esp").Enabled == false and v.Character:FindFirstChild("Icon").Enabled == false then
+                    v.Character:FindFirstChild("Totally NOT Esp").Enabled = true
+                    v.Character:FindFirstChild("Icon").Enabled = true
+                  else
+                    if v.Character:FindFirstChild("Icon") then
+                      v.Character:FindFirstChild("Icon")["ESP Text"].Text = v[PlayerName].." | Distance: "..pos
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end)
+
+  wait()
+
+  DB = false
+    end
+  end
+}
+Page1:CreateButton {
+  Name = "LEVEL BYPASS", -- The name of your button.
+  Callback = function () 
+    -- You would put the code you want to be ran here.
+game:GetService("Players").LocalPlayer.stored.Level.Value = math.huge
+  end
+}
+
+Page1:CreateHeader {
+  Text = "USE THE RESPAWN SCRIPT WHEN YOU CUFFED OR KILLED BUT YOU LOSING CASH" -- The text that the label displays.
+}
+
+Page1:CreateButton {
+  Name = "RESPAWN", -- The name of your button.
+  Callback = function () 
+    -- You would put the code you want to be ran here.
+    local args = {
+    [1] = "ss"
+}
+
+game:GetService("Lighting").bt:FireServer(unpack(args))
+  end
+}
+
+Page1:CreateButton {
+   Name = "REJOIN",
+  Callback = function ()
+    local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local delay = 0.5 -- Rejoin delay in seconds
+
+-- Function to rejoin the game after delay
+local function rejoinGame()
+    wait(delay)
+    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId)
+end
+
+-- Start rejoin process
+rejoinGame() 
+  end
+}
+
+local inputWalkSpeed -- Define the input element variable
+
+inputWalkSpeed = Page1:CreateInputButton {
+  Name = "Walk Speed", -- The name of your input button.
+  PlaceholderText = "Enter Walk Speed", -- What the placeholder for the inputbox says.
+  InputType = "number", -- Accept only numbers for input.
+  MaxNumber = 50, -- Set the maximum value you want to allow.
+  MinNumber = 1, -- Set the minimum value you want to allow.
+  Callback = function()
+    local walkSpeed = inputWalkSpeed:GetInput() -- Get the input value.
+    if walkSpeed then -- Ensure a valid number was entered.
+      game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = walkSpeed
+    end
+  end
+}
+
+Page1:CreateButton {
+  Name = "TOOLS KNOWER", -- The nameof your button.
+  Callback = function () 
+loadstring(game:HttpGet("https://pastebin.com/raw/p95MUtcY"))()
+  end
+}
+Page1:CreateButton {
+  Name = "CHAT SPY", -- The name of your button.
+  Callback = function () 
+-- Create ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0.2, 0, 0.35, 0)
+frame.Position = UDim2.new(0.75, 0, 0.1, 0)
+frame.BackgroundTransparency = 0.5
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
+frame.Parent = screenGui
+frame.Active = true
+frame.Draggable = true
+
+-- Create Title Label
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, 0, 0.1, 0)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.TextScaled = true
+titleLabel.Text = "Chat Spy"
+titleLabel.Font = Enum.Font.SourceSansBold
+titleLabel.Parent = frame
+
+-- Create Scroll Frame for Messages
+local scrollFrame = Instance.new("ScrollingFrame")
+scrollFrame.Size = UDim2.new(1, 0, 0.85, 0)
+scrollFrame.Position = UDim2.new(0, 0, 0.1, 0)
+scrollFrame.BackgroundTransparency = 1
+scrollFrame.BorderSizePixel = 0
+scrollFrame.ScrollBarThickness = 6
+scrollFrame.Parent = frame
+
+-- Function to Add Chat Message
+local function addChatMessage(playerName, message)
+    local messageLabel = Instance.new("TextLabel")
+    messageLabel.Size = UDim2.new(1, 0, 0, 20)
+    messageLabel.Position = UDim2.new(0, 0, 0, #scrollFrame:GetChildren() * 20)
+    messageLabel.BackgroundTransparency = 1
+    messageLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+    messageLabel.TextScaled = true
+    messageLabel.TextWrapped = true
+    messageLabel.Text = playerName .. ": " .. message
+    messageLabel.Font = Enum.Font.SourceSans
+    messageLabel.Parent = scrollFrame
+
+    scrollFrame.CanvasSize = UDim2.new(0, 0, 0, #scrollFrame:GetChildren() * 20)
+end
+
+-- Intercept Chat Messages
+game.Players.PlayerAdded:Connect(function(player)
+    player.Chatted:Connect(function(message)
+        addChatMessage(player.Name, message)
+    end)
+end)
+
+-- Loop through existing players
+for _, player in ipairs(game.Players:GetPlayers()) do
+    player.Chatted:Connect(function(message)
+        addChatMessage(player.Name, message)
+    end)
+end
+  end
+}
+
+
+local Page2 = UI:CreatePage { -- Make sure to assign a new variable name for each page you create.
+  Name = "COMBAT" -- The name of the page.
+}
+
+
+
+
+local IsDisabled = true -- Toggle to enable/disable the hitbox
+local IsTeamCheckEnabled = false -- Toggle to check for team
+
+local inputHitboxSize -- Define the input element variable
+local inputToggleHitboxHead -- Define the input element variable
+
+inputHitboxSize = Page2:CreateInputButton {
+  Name = "Hitbox Size",
+  PlaceholderText = "Enter Hitbox Size (e.g., 1.5)",
+  Callback = function()
+    local hitboxSizeString = inputHitboxSize:GetInput()
+    if hitboxSizeString then
+      local hitboxSize = tonumber(hitboxSizeString)
+
+      if hitboxSize then
+        -- Store the hitbox size for use when the toggle is on
+        getgenv().hitboxSize = hitboxSize
+      else
+        print("Invalid hitbox size. Please enter a number.")
+      end
+    end
+  end
+}
+
+-- Input button for toggling hitbox
+inputToggleHitboxHead = Page2:CreateButton {
+  Name = "Hitbox Head Toggle",
+  Callback = function()
+    IsDisabled = not IsDisabled -- Toggle the hitbox on/off
+    if IsDisabled then
+      print("Head hitbox disabled.")
+    else
+      print("Head hitbox enabled.")
+    end
+  end
+}
+
+-- Create a separate button to toggle team check
+Page2:CreateButton {
+  Name = "Team Check",
+  Callback = function()
+    IsTeamCheckEnabled = not IsTeamCheckEnabled -- Toggle team check on/off
+    if IsTeamCheckEnabled then
+      print("Team check enabled.")
+    else
+      print("Team check disabled.")
+    end
+  end
+}
+
+-- RunService for hitbox logic
+game:GetService('RunService').RenderStepped:Connect(function()
+  if not IsDisabled then -- Only run if hitbox is enabled
+    local localPlayer = game:GetService('Players').LocalPlayer
+    if not localPlayer then return end
+
+    local localPlayerTeam = localPlayer.Team
+
+    for _, player in ipairs(game:GetService('Players'):GetPlayers()) do
+      if player ~= localPlayer and (not IsTeamCheckEnabled or player.Team ~= localPlayerTeam) then
+        local headPart = player.Character and player.Character:FindFirstChild("Head")
+        if headPart then
+          if getgenv().hitboxSize then
+            headPart.Size = Vector3.new(getgenv().hitboxSize, getgenv().hitboxSize, getgenv().hitboxSize)
+          else
+            headPart.Size = Vector3.new(1, 1, 1) -- Default size if no input is provided
+          end
+          headPart.Transparency = 0.7
+          headPart.BrickColor = BrickColor.new("orange")
+          headPart.Material = Enum.Material.Neon
+          headPart.CanCollide = false
+        end
+      end
+    end
+  end
+end)
+
+  Page2:CreateButton {
+  Name = "inf ammo (weapom need to be dropped)",
+  Callback = function()
+-- Function to set ammo and magazine values for a gun
+local function setGunProperties(gun)
+    -- Check if the gun has the GunScript_Server and its Ammo and Mag properties
+    if gun:FindFirstChild("GunScript_Server") then
+        local gunScript = gun.GunScript_Server
+
+        if gunScript:FindFirstChild("Ammo") then
+            gunScript.Ammo.Value = 0
+        end
+
+        if gunScript:FindFirstChild("Mag") then
+            gunScript.Mag.Value = math.huge  -- Setting to Inf
+        end
+    end
+end
+
+-- Iterate through all guns in the workspace
+for _, gun in pairs(workspace:GetChildren()) do
+    -- Assuming the guns are directly under workspace or in a specific model/container
+    setGunProperties(gun)
+end
+
+-- Optional: If guns can be added dynamically, connect a function to handle new guns
+workspace.ChildAdded:Connect(function(newGun)
+    setGunProperties(newGun)
+end)
+  end}
+
+
+
+  Page2:CreateButton {
+  Name = "auto pick up ",
+  Callback = function()
+  -- This script searches for every dropped item on the map every second.
+-- If an item is found, it will equip the tool to pick it up.
+while true do
+    local localplayer = game.Players.LocalPlayer
+
+    -- Search through all descendants of the workspace for tools
+    for _, v in ipairs(game.Workspace:GetDescendants()) do
+        if v:IsA("Tool") then
+            -- Equip the tool if it's found
+            localplayer.Character.Humanoid:EquipTool(v)
+            wait(1)  -- Wait to ensure the tool is picked up before searching again
+        end
+    end
+
+    wait(1)
+end
+      end
+    }
+
+
+    local Page3 = UI:CreatePage { -- Make sure to assign a new variable name for each page you create.
+  Name = "Teleport" -- The name of the page.
+}
+
+local teleportLocations = {
+  ["APT1"] = CFrame.new(798.359924, -397.566132, -92.436554, 0.994771957, -0.0177368, 0.100569315, 5.63678839e-07, 0.984802485, 0.173678055, -0.102121405, -0.172769994, 0.979653895),
+  ["Car Dealer"] = CFrame.new(-681.923279, 4.11534691, 55.4324226, -0.0768957809, -5.96806302e-08, -0.997039139, 1.39818948e-08, 1, -6.09362019e-08, 0.997039139, -1.8626233e-08, -0.0768957809)
+} 
+local inputTeleport -- Define the input element variable
+
+inputTeleport = Page3:CreateInputButton {
+  Name = "Teleport", 
+  PlaceholderText = "Enter location (e.g., APT1)",
+  Callback = function()
+    local locationName = inputTeleport:GetInput() 
+    if locationName then 
+      local teleportCFrame = teleportLocations[locationName:upper()]
+      if teleportCFrame then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = teleportCFrame
+      else
+        print("Invalid location. Please enter a valid location name.")
+      end
+    end
+  end
+}
+
+-- ... (Rest of your code)
+
+
+local Page4 = UI:CreatePage { -- Make sure to assign a new variable name for each page you create.
+  Name = "AUTOFARM" -- The name of the page.
+  }
+
+Page4:CreateToggle {
+  Name = "AutoFarm (weed) if you want stop it do /respawn ( i dosent made it)", -- The name of your toggle.
+  Flag = nil, -- You can leave nil or simply delete if you dont have multiple elements with the same name or your UI doesnt save. If you have multiple elements with the same name, make sure to give each one a different flag as it will cause save overlapping if you dont.
+  Callback = function ()
+    -- You would put the code you want to be looped here.
+
+    local humanoid = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+while true do
+    for i, v in pairs(workspace.Plants:GetChildren()) do
+        if v.Name == "Plant" and v:FindFirstChild("Leaf") then
+            local leafCFrame = v.Leaf.CFrame
+            local newPosition = leafCFrame.Position + Vector3.new(0, 3, 0) 
+            humanoid.CFrame = CFrame.new(newPosition, leafCFrame.Position)
+            fireproximityprompt(v.Leaf.Interact)
+        end
+    end
+    wait(1)
+end
+  end
+}
+
+
+    -- ... (Previous code)
+
+local Page5 = UI:CreatePage { 
+  Name = "MISC" 
+}
+
+Page5:CreateButton {
+  Name = "copy discord link", 
+  Callback = function () 
+    -- Use a module or custom function to set the clipboard
+    setclipboard("https://discord.com/invite/QYaEUJGHFn")
+  end
+}
+
+
+
+
