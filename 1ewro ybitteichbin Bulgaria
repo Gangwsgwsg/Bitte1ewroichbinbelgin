@@ -1290,16 +1290,6 @@ local function initializeSettings()
         Main = tabhold.Main -- Main-Referenz speichern
         TabFolder = tabhold.TabFolder -- TabFolder-Referenz speichern
 
-        local settingsTab = tabhold:Tab("Settings")
-        settingsTab:Dropdown("UI Background Color", {"Light", "Black", "Purple", "Red", "Green"}, function(value)
-            if value == "Light" then
-                CurrentUIBackgroundColor = Color3.fromRGB(200, 200, 200)
-            elseif value == "Black" then
-                CurrentUIBackgroundColor = Color3.fromRGB(30, 30, 30)
-            elseif value == "Purple" then
-                CurrentUIBackgroundColor = Color3.fromRGB(70, 0, 130)
-            elseif value == "Red" then
-                CurrentUIBackgroundColor = Color3.fromRGB(130, 0, 0)
             elseif value == "Green" then
                 CurrentUIBackgroundColor = Color3.fromRGB(0, 130, 0)
             end
@@ -1344,4 +1334,13 @@ end
 
 initializeSettings()
 
-return lib
+return lib        local settingsTab = tabhold:Tab("Settings")
+        settingsTab:Dropdown("UI Background Color", {"Light", "Black", "Purple", "Red", "Green"}, function(value)
+            if value == "Light" then
+                CurrentUIBackgroundColor = Color3.fromRGB(200, 200, 200)
+            elseif value == "Black" then
+                CurrentUIBackgroundColor = Color3.fromRGB(30, 30, 30)
+            elseif value == "Purple" then
+                CurrentUIBackgroundColor = Color3.fromRGB(70, 0, 130)
+            elseif value == "Red" then
+                CurrentUIBackgroundColor = Color3.fromRGB(130, 0, 0)
