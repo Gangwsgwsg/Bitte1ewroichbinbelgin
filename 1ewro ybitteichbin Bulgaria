@@ -1364,11 +1364,7 @@ TextboxStroke.Parent = Textbox
     local function createSettingsTab()
         settingsTab:Toggle("Transparency", false, function(state)
     if state then
-        Main.BackgroundTransparency = 0.5 
-        TabHoldStroke.Transparency = 1 
-        
-        Title.TextTransparency = 0
-
+    
         for _, tab in next, TabFolder:GetChildren() do
             if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
                 tab.UIStroke.Transparency = 1
@@ -1380,9 +1376,6 @@ TextboxStroke.Parent = Textbox
             end
         end
     else
-        Main.BackgroundTransparency = 0 
-        TabHoldStroke.Transparency = 0.5 
-        Title.TextTransparency = 0
         for _, tab in next, TabFolder:GetChildren() do
             if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
                 tab.UIStroke.Transparency = 0.5
