@@ -8,7 +8,6 @@ local PresetColor = Color3.fromRGB(44, 120, 224)
 local CloseBind = Enum.KeyCode.RightControl
 local CurrentUIBackgroundColor = Color3.fromRGB(30, 30, 30)
 
-
 if game.CoreGui:FindFirstChild("QuickHacksUI") then
     game.CoreGui.QuickHacksUI:Destroy()
 end
@@ -61,6 +60,7 @@ function QuickHacksUI:Window(text, preset, closebind)
     local Main = Instance.new("Frame")
     local MainCorner = Instance.new("UICorner")
     local TabHold = Instance.new("Frame")
+    local TabHoldStroke = Instance.new("UIStroke") -- Neu: UIStroke für TabHold
     local TabHoldLayout = Instance.new("UIListLayout")
     local Title = Instance.new("TextLabel")
     local TabFolder = Instance.new("Folder")
@@ -86,6 +86,12 @@ function QuickHacksUI:Window(text, preset, closebind)
     TabHold.BackgroundTransparency = 1
     TabHold.Position = UDim2.new(0.034, 0, 0.147, 0)
     TabHold.Size = UDim2.new(0, 107, 0, 254)
+
+    -- UIStroke für TabHold hinzufügen
+    TabHoldStroke.Parent = TabHold
+    TabHoldStroke.Color = Color3.fromRGB(0, 0, 0) -- Schwarz
+    TabHoldStroke.Thickness = 1.5
+    TabHoldStroke.Transparency = 0.5
 
     TabHoldLayout.Name = "TabHoldLayout"
     TabHoldLayout.Parent = TabHold
@@ -122,7 +128,7 @@ function QuickHacksUI:Window(text, preset, closebind)
         MobileBtn.Name = "MobileBtn"
         MobileBtn.Parent = ui
         MobileBtn.BackgroundTransparency = 1
-        MobileBtn.Position = UDim2.new(0.95, 0, 0.5, 0) -- Rechts Mitte
+        MobileBtn.Position = UDim2.new(0.95, 0, 0.5, 0)
         MobileBtn.Size = UDim2.new(0, 50, 0, 50)
         MobileBtn.Image = "rbxassetid://3570695787"
         MakeDraggable(MobileBtn, MobileBtn)
@@ -345,6 +351,7 @@ function QuickHacksUI:Window(text, preset, closebind)
         end)()
 
         local Tab = Instance.new("ScrollingFrame")
+        local TabStroke = Instance.new("UIStroke") -- Neu: UIStroke für Tabs
         local TabLayout = Instance.new("UIListLayout")
 
         Tab.Name = "Tab"
@@ -357,6 +364,12 @@ function QuickHacksUI:Window(text, preset, closebind)
         Tab.CanvasSize = UDim2.new(0, 0, 0, 0)
         Tab.ScrollBarThickness = 3
         Tab.Visible = false
+
+        -- UIStroke für Tab hinzufügen
+        TabStroke.Parent = Tab
+        TabStroke.Color = Color3.fromRGB(0, 0, 0) -- Schwarz (Standardfarbe)
+        TabStroke.Thickness = 2.5
+        TabStroke.Transparency = 0.5
 
         TabLayout.Name = "TabLayout"
         TabLayout.Parent = Tab
@@ -1259,8 +1272,22 @@ function QuickHacksUI:Window(text, preset, closebind)
         settingsTab:Toggle("Transparency", false, function(state)
             if state then
                 Main.BackgroundTransparency = 0.5
+                -- UIStroke-Transparenz auf 1 setzen
+                TabHoldStroke.Transparency = 1
+                for _, tab in next, TabFolder:GetChildren() do
+                    if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
+                        tab.UIStroke.Transparency = 1
+                    end
+                end
             else
                 Main.BackgroundTransparency = 0
+                -- UIStroke-Transparenz auf 0.5 zurücksetzen
+                TabHoldStroke.Transparency = 0.5
+                for _, tab in next, TabFolder:GetChildren() do
+                    if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
+                        tab.UIStroke.Transparency = 0.5
+                    end
+                end
             end
         end)
 
@@ -1275,9 +1302,11 @@ function QuickHacksUI:Window(text, preset, closebind)
             end
         end)
 
-settingsTab:Colorpicker("Change Textures Color", Color3.fromRGB(44, 120, 224), function(t)
-    ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
-end)
+        -- Korrigierter Colorpicker
+        settingsTab:Colorpicker("Change Textures Color", Color3.fromRGB(44, 120, 224), function(t)
+            QuickHacksUI:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+        end)
+
         for _, v in next, TabFolder:GetChildren() do
             v.Visible = (v == settingsTab.Tab)
         end
