@@ -8,6 +8,13 @@ local PresetColor = Color3.fromRGB(44, 120, 224)
 local CloseBind = Enum.KeyCode.RightControl
 local CurrentUIBackgroundColor = Color3.fromRGB(30, 30, 30)
 
+
+if game.CoreGui:FindFirstChild("QuickHacksUI") then 
+    
+    game.CoreGui.ui:Destroy()
+    end
+
+
 local ui = Instance.new("ScreenGui")
 ui.Name = "QuickHacksUI"
 ui.Parent = game.CoreGui
