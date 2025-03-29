@@ -182,6 +182,7 @@ function QuickHacksUI:Window(text, preset, closebind)
         local NotificationDesc = Instance.new("TextLabel")
         local NotificationCorner = Instance.new("UICorner")
         local NotificationStroke = Instance.new("UIStroke")
+        local NF = Instance.new("UICorner")
 
         NotificationHold.Name = "NotificationHold"
         NotificationHold.Parent = Main
@@ -210,8 +211,8 @@ function QuickHacksUI:Window(text, preset, closebind)
         NotificationFrame.Size = UDim2.new(0, 0, 0, 0)
         NotificationFrame:TweenSize(UDim2.new(0, 240, 0, 220), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.6, true)
         
-        NotificationCorner.CornerRadius = UDim.new(0, 12)
-        NotificationCorner.Parent = NotificationFrame
+        NF.CornerRadius = UDim.new(0, 12)
+        NF.Parent = NotificationFrame
 
 
         NotificationStroke.Color = Color3.fromRGB(100, 100, 100)
