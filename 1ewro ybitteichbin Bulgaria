@@ -209,6 +209,10 @@ function QuickHacksUI:Window(text, preset, closebind)
         NotificationFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
         NotificationFrame.Size = UDim2.new(0, 0, 0, 0)
         NotificationFrame:TweenSize(UDim2.new(0, 240, 0, 220), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.6, true)
+        
+        NotificationCorner.CornerRadius = UDim.new(0, 12)
+        NotificationCorner.Parent = NotificationFrame
+
 
         NotificationStroke.Color = Color3.fromRGB(100, 100, 100)
         NotificationStroke.Thickness = 1.5
