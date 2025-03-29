@@ -409,6 +409,8 @@ function QuickHacksUI:Window(text, preset, closebind)
             local Button = Instance.new("TextButton")
             local ButtonCorner = Instance.new("UICorner")
             local ButtonTitle = Instance.new("TextLabel")
+            local ButtonStroke = Instance.new("UIStroke")
+
 
             Button.Name = "Button"
             Button.Parent = Tab
@@ -420,6 +422,11 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             ButtonCorner.CornerRadius = UDim.new(0, 5)
             ButtonCorner.Parent = Button
+
+            ButtonStroke.Parent = Button
+            ButtonStroke.Thickness = 1.2
+            ButtonStroke.Transparency = 0.2
+            ButtonStroke.Color = Color3.fromRGB(255, 255, 255)
 
             ButtonTitle.Name = "ButtonTitle"
             ButtonTitle.Parent = Button
@@ -463,7 +470,8 @@ function QuickHacksUI:Window(text, preset, closebind)
             local FrameToggle3Corner = Instance.new("UICorner")
             local FrameToggleCircle = Instance.new("Frame")
             local FrameToggleCircleCorner = Instance.new("UICorner")
-
+            local ToggleStroke = Instance.new("UIStroke")
+           
             Toggle.Name = "Toggle"
             Toggle.Parent = Tab
             Toggle.BackgroundColor3 = CurrentUIBackgroundColor
@@ -474,6 +482,11 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             ToggleCorner.CornerRadius = UDim.new(0, 5)
             ToggleCorner.Parent = Toggle
+
+            ToggleStroke.Parent = Toggle
+            ToggleStroke.Thickness = 1.2
+            ToggleStroke.Transparency = 0.2
+            ToggleStroke.Color = Color3.fromRGB(255, 255, 255)
 
             ToggleTitle.Name = "ToggleTitle"
             ToggleTitle.Parent = Toggle
@@ -493,6 +506,7 @@ function QuickHacksUI:Window(text, preset, closebind)
             FrameToggle1.Size = UDim2.new(0, 37, 0, 18)
 
             FrameToggle1Corner.Parent = FrameToggle1
+
 
             FrameToggle2.Name = "FrameToggle2"
             FrameToggle2.Parent = FrameToggle1
@@ -565,6 +579,8 @@ function QuickHacksUI:Window(text, preset, closebind)
             local SlideFrame = Instance.new("Frame")
             local CurrentValueFrame = Instance.new("Frame")
             local SlideCircle = Instance.new("ImageButton")
+            local SliderStroke = Instance.new("UIStroke")
+
 
             Slider.Name = "Slider"
             Slider.Parent = Tab
@@ -576,6 +592,11 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             SliderCorner.CornerRadius = UDim.new(0, 5)
             SliderCorner.Parent = Slider
+
+            SliderStroke.Parent = Slider
+            SliderStroke.Thickness = 1.2
+            SliderStroke.Transparency = 0.2
+            SliderStroke.Color = Color3.fromRGB(255, 255, 255)
 
             SliderTitle.Name = "SliderTitle"
             SliderTitle.Parent = Slider
@@ -681,6 +702,11 @@ function QuickHacksUI:Window(text, preset, closebind)
             DropdownCorner.CornerRadius = UDim.new(0, 5)
             DropdownCorner.Parent = Dropdown
 
+            DropdownStroke.Parent = Dropdown
+            DropdownStroke.Thickness = 1.2
+            DropdownStroke.Transparency = 0.2
+            DropdownStroke.Color = Color3.fromRGB(255, 255, 255)
+            
             DropdownBtn.Name = "DropdownBtn"
             DropdownBtn.Parent = Dropdown
             DropdownBtn.BackgroundTransparency = 1
@@ -743,6 +769,8 @@ function QuickHacksUI:Window(text, preset, closebind)
                 end
                 local Item = Instance.new("TextButton")
                 local ItemCorner = Instance.new("UICorner")
+                local ItemStroke = Instance.new("UIStroke")
+               
 
                 Item.Name = "Item"
                 Item.Parent = DropItemHolder
@@ -757,6 +785,12 @@ function QuickHacksUI:Window(text, preset, closebind)
 
                 ItemCorner.CornerRadius = UDim.new(0, 4)
                 ItemCorner.Parent = Item
+
+
+ItemStroke.Parent = Item
+                ItemStroke.Thickness = 1.2
+                ItemStroke.Transparency = 0.2
+                ItemStroke.Color = Color3.fromRGB(255, 255, 255)
 
                 Item.MouseEnter:Connect(function()
                     TweenService:Create(Item, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(37, 37, 37)}):Play()
@@ -793,6 +827,7 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             local Colorpicker = Instance.new("Frame")
             local ColorpickerCorner = Instance.new("UICorner")
+local ColorpickerStroke = Instance.new("UIStroke")
             local ColorpickerTitle = Instance.new("TextLabel")
             local BoxColor = Instance.new("Frame")
             local BoxColorCorner = Instance.new("UICorner")
@@ -825,6 +860,11 @@ function QuickHacksUI:Window(text, preset, closebind)
             ColorpickerCorner.CornerRadius = UDim.new(0, 5)
             ColorpickerCorner.Parent = Colorpicker
 
+ColorpickerStroke.Parent = Colorpicker
+            ColorpickerStroke.Thickness = 1.2
+            ColorpickerStroke.Transparency = 0.2
+            ColorpickerStroke.Color = Color3.fromRGB(255, 255, 255)
+
             ColorpickerTitle.Name = "ColorpickerTitle"
             ColorpickerTitle.Parent = Colorpicker
             ColorpickerTitle.BackgroundTransparency = 1
@@ -844,6 +884,7 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             BoxColorCorner.CornerRadius = UDim.new(0, 5)
             BoxColorCorner.Parent = BoxColor
+
 
             ColorpickerBtn.Name = "ColorpickerBtn"
             ColorpickerBtn.Parent = ColorpickerTitle
@@ -1088,6 +1129,8 @@ function QuickHacksUI:Window(text, preset, closebind)
             local Label = Instance.new("TextButton")
             local LabelCorner = Instance.new("UICorner")
             local LabelTitle = Instance.new("TextLabel")
+            local LabelStroke = Instance.new("UIStroke")
+
 
             Label.Name = "Label"
             Label.Parent = Tab
@@ -1099,6 +1142,11 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             LabelCorner.CornerRadius = UDim.new(0, 5)
             LabelCorner.Parent = Label
+
+LabelStroke.Parent = Label
+            LabelStroke.Thickness = 1.2
+            LabelStroke.Transparency = 0.2
+            LabelStroke.Color = Color3.fromRGB(255, 255, 255)
 
             LabelTitle.Name = "LabelTitle"
             LabelTitle.Parent = Label
@@ -1117,6 +1165,7 @@ function QuickHacksUI:Window(text, preset, closebind)
         function tabcontent:Textbox(text, disapper, callback)
             local Textbox = Instance.new("Frame")
             local TextboxCorner = Instance.new("UICorner")
+local TextboxStroke = Instance.new("UIStroke")
             local TextboxTitle = Instance.new("TextLabel")
             local TextboxFrame = Instance.new("Frame")
             local TextboxFrameCorner = Instance.new("UICorner")
@@ -1130,6 +1179,11 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             TextboxCorner.CornerRadius = UDim.new(0, 5)
             TextboxCorner.Parent = Textbox
+
+TextboxStroke.Parent = Textbox
+            TextboxStroke.Thickness = 1.2
+            TextboxStroke.Transparency = 0.2
+            TextboxStroke.Color = Color3.fromRGB(255, 255, 255)
 
             TextboxTitle.Name = "TextboxTitle"
             TextboxTitle.Parent = Textbox
@@ -1175,6 +1229,7 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             local Bind = Instance.new("TextButton")
             local BindCorner = Instance.new("UICorner")
+local BindStroke = Instance.new("UIStroke")
             local BindTitle = Instance.new("TextLabel")
             local BindText = Instance.new("TextLabel")
 
@@ -1188,6 +1243,11 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             BindCorner.CornerRadius = UDim.new(0, 5)
             BindCorner.Parent = Bind
+
+BindStroke.Parent = Bind
+            BindStroke.Thickness = 1.2
+            BindStroke.Transparency = 0.2
+            BindStroke.Color = Color3.fromRGB(255, 255, 255)
 
             BindTitle.Name = "BindTitle"
             BindTitle.Parent = Bind
