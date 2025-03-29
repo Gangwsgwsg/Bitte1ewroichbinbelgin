@@ -129,7 +129,7 @@ function QuickHacksUI:Window(text, preset, closebind)
         MobileBtn.BackgroundTransparency = 1
         MobileBtn.Position = UDim2.new(0.949999988, -74, 0.5, -42)
         MobileBtn.Size = UDim2.new(0, 65, 0, 65)
-        MobileBtn.Image = "rbxassetid://3570695787"
+        MobileBtn.Image = "rbxassetid://130039636229325"
         MakeDraggable(MobileBtn, MobileBtn)
         MobileBtn.MouseButton1Click:Connect(function()
             if Main.Size.X.Offset > 0 then
