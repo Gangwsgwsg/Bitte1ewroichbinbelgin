@@ -11,7 +11,7 @@ local CurrentUIBackgroundColor = Color3.fromRGB(30, 30, 30)
 
 if game.CoreGui:FindFirstChild("QuickHacksUI") then 
     
-    game.CoreGui.ui:Destroy()
+    game.CoreGui.QuickHacksUI:Destroy()
     end
 
 
