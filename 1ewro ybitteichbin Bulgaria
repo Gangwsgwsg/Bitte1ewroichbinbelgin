@@ -294,7 +294,7 @@ function QuickHacksUI:Window(text, preset, closebind)
             wait(0.4)
             TweenService:Create(NotificationHold, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 1}):Play()
             wait(0.3)
-            Main:Destroy()
+            ui:Destroy()
             NotificationHold:Destroy()
         end)
 
