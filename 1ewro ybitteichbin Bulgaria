@@ -126,6 +126,9 @@ function QuickHacksUI:Window(text, preset, closebind)
     CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
     CloseBtn.TextSize = 16
 
+Mobilebt.CornerRadius = UDim.new(1, 10)
+            Mobilebt.Parent = MobileBtn
+
     if UserInputService.TouchEnabled then
         MobileBtn.Name = "MobileBtn"
         MobileBtn.Parent = ui
@@ -147,9 +150,7 @@ function QuickHacksUI:Window(text, preset, closebind)
     Main:TweenSize(UDim2.new(0, 560, 0, 319), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.6, true)
     MakeDraggable(DragFrame, Main)
 
-    Mobilebt.CornerRadius = UDim.new(1, 10)
-            Mobilebt.Parent = MobileBtn
-
+    
     CloseBtn.MouseButton1Click:Connect(function()
         QuickHacksUI:Notification("Close UI", "Are you sure?", "Yes", "No")
     end)
