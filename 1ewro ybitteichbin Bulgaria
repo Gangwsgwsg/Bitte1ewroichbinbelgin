@@ -663,9 +663,10 @@ ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
             local function move(input)
                 local posX = math.clamp((input.Position.X - SlideFrame.AbsolutePosition.X) / SlideFrame.AbsoluteSize.X, 0, 1)
                 local value = math.floor((posX * (max - min)) + min)
+                value = math.floor(value * 100) / 100
                 SlideCircle.Position = UDim2.new(posX, -6, -1.304, 0)
                 CurrentValueFrame.Size = UDim2.new(posX, 0, 0, 3)
-                SliderValue.Text = tostring(value)
+                SliderValue.Text = string.format("%.2f", value)
                 pcall(callback, value)
             end
 
@@ -1361,26 +1362,39 @@ TextboxStroke.Parent = Textbox
 
     local settingsTab
     local function createSettingsTab()
-        settingsTab = tabhold:Tab("Settings")
         settingsTab:Toggle("Transparency", false, function(state)
-            if state then
-                Main.BackgroundTransparency = 0.5
-                TabHoldStroke.Transparency = 1
-                for _, tab in next, TabFolder:GetChildren() do
-                    if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
-                        tab.UIStroke.Transparency = 1
-                    end
-                end
-            else
-                Main.BackgroundTransparency = 0
-                TabHoldStroke.Transparency = 0.5
-                for _, tab in next, TabFolder:GetChildren() do
-                    if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
-                        tab.UIStroke.Transparency = 0.5
-                    end
+    if state then
+        Main.BackgroundTransparency = 0.5 
+        TabHoldStroke.Transparency = 1 
+        
+        Title.TextTransparency = 0
+
+        for _, tab in next, TabFolder:GetChildren() do
+            if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
+                tab.UIStroke.Transparency = 1
+            end
+            for _, item in next, tab:GetDescendants() do
+                if item:IsA("UIStroke") then
+                    item.Transparency = 1
                 end
             end
-        end)
+        end
+    else
+        Main.BackgroundTransparency = 0 
+        TabHoldStroke.Transparency = 0.5 
+        Title.TextTransparency = 0
+        for _, tab in next, TabFolder:GetChildren() do
+            if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
+                tab.UIStroke.Transparency = 0.5
+            end
+            for _, item in next, tab:GetDescendants() do
+                if item:IsA("UIStroke") then
+                    item.Transparency = 0.2
+                end
+            end
+        end
+    end
+end)
 
         settingsTab:Bind("Toggle UI Visibility", Enum.KeyCode.RightControl, function()
             if Main.Size.X.Offset > 0 then
