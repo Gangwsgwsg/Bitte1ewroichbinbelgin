@@ -691,6 +691,7 @@ ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
             local Dropdown = Instance.new("Frame")
             local DropdownCorner = Instance.new("UICorner")
+            local DropdownStroke = Instance.new("UIStroke")
             local DropdownBtn = Instance.new("TextButton")
             local DropdownTitle = Instance.new("TextLabel")
             local ArrowImg = Instance.new("ImageLabel")
