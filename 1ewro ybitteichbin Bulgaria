@@ -1276,7 +1276,7 @@ function QuickHacksUI:Window(text, preset, closebind)
         end)
 
 settingsTab:Colorpicker("Change Textures Color", Color3.fromRGB(44, 120, 224), function(t)
-    Main:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+    ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
 end)
         for _, v in next, TabFolder:GetChildren() do
             v.Visible = (v == settingsTab.Tab)
