@@ -424,9 +424,11 @@ function QuickHacksUI:Window(text, preset, closebind)
             ButtonCorner.Parent = Button
 
             ButtonStroke.Parent = Button
-            ButtonStroke.Thickness = 1.2
-            ButtonStroke.Transparency = 0.2
-            ButtonStroke.Color = Color3.fromRGB(255, 255, 255)
+ButtonStroke.Thickness = 1
+ButtonStroke.Transparency = 0.3
+ButtonStroke.Color = Color3.fromRGB(0, 0, 0)
+ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
 
             ButtonTitle.Name = "ButtonTitle"
             ButtonTitle.Parent = Button
@@ -486,7 +488,8 @@ function QuickHacksUI:Window(text, preset, closebind)
             ToggleStroke.Parent = Toggle
             ToggleStroke.Thickness = 1.2
             ToggleStroke.Transparency = 0.2
-            ToggleStroke.Color = Color3.fromRGB(255, 255, 255)
+            ToggleStroke.Color = Color3.fromRGB(0 , 0 , 0 )
+            ToggleStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
             ToggleTitle.Name = "ToggleTitle"
             ToggleTitle.Parent = Toggle
@@ -594,9 +597,11 @@ function QuickHacksUI:Window(text, preset, closebind)
             SliderCorner.Parent = Slider
 
             SliderStroke.Parent = Slider
-            SliderStroke.Thickness = 1.2
-            SliderStroke.Transparency = 0.2
-            SliderStroke.Color = Color3.fromRGB(255, 255, 255)
+            SliderStroke.Thickness = 0.9
+            SliderStroke.Transparency = 0.3
+            SliderStroke.Color = Color3.fromRGB(0,0,0)
+            SliderStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
 
             SliderTitle.Name = "SliderTitle"
             SliderTitle.Parent = Slider
@@ -703,10 +708,13 @@ function QuickHacksUI:Window(text, preset, closebind)
             DropdownCorner.Parent = Dropdown
 
             DropdownStroke.Parent = Dropdown
-            DropdownStroke.Thickness = 1.2
+            DropdownStroke.Thickness = 0.9
             DropdownStroke.Transparency = 0.2
-            DropdownStroke.Color = Color3.fromRGB(255, 255, 255)
-            
+            DropdownStroke.Color = Color3.fromRGB(0,0,0)
+            DropdownStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+  
+
+
             DropdownBtn.Name = "DropdownBtn"
             DropdownBtn.Parent = Dropdown
             DropdownBtn.BackgroundTransparency = 1
@@ -787,10 +795,12 @@ function QuickHacksUI:Window(text, preset, closebind)
                 ItemCorner.Parent = Item
 
 
-ItemStroke.Parent = Item
-                ItemStroke.Thickness = 1.2
-                ItemStroke.Transparency = 0.2
-                ItemStroke.Color = Color3.fromRGB(255, 255, 255)
+                ItemStroke.Parent = Item
+                ItemStroke.Thickness = 0.9
+                ItemStroke.Transparency = 0.3
+                ItemStroke.Color = Color3.fromRGB(0,0,0)
+                ItemStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
 
                 Item.MouseEnter:Connect(function()
                     TweenService:Create(Item, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(37, 37, 37)}):Play()
@@ -827,7 +837,7 @@ ItemStroke.Parent = Item
 
             local Colorpicker = Instance.new("Frame")
             local ColorpickerCorner = Instance.new("UICorner")
-local ColorpickerStroke = Instance.new("UIStroke")
+            local ColorpickerStroke = Instance.new("UIStroke")
             local ColorpickerTitle = Instance.new("TextLabel")
             local BoxColor = Instance.new("Frame")
             local BoxColorCorner = Instance.new("UICorner")
@@ -860,10 +870,13 @@ local ColorpickerStroke = Instance.new("UIStroke")
             ColorpickerCorner.CornerRadius = UDim.new(0, 5)
             ColorpickerCorner.Parent = Colorpicker
 
-ColorpickerStroke.Parent = Colorpicker
-            ColorpickerStroke.Thickness = 1.2
-            ColorpickerStroke.Transparency = 0.2
-            ColorpickerStroke.Color = Color3.fromRGB(255, 255, 255)
+            ColorpickerStroke.Parent = Colorpicker
+            ColorpickerStroke.Thickness = 0.9
+            ColorpickerStroke.Transparency = 0.3
+            ColorpickerStroke.Color = Color3.fromRGB(0,0,0)
+            ColorpickerStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+
 
             ColorpickerTitle.Name = "ColorpickerTitle"
             ColorpickerTitle.Parent = Colorpicker
@@ -1143,10 +1156,13 @@ ColorpickerStroke.Parent = Colorpicker
             LabelCorner.CornerRadius = UDim.new(0, 5)
             LabelCorner.Parent = Label
 
-LabelStroke.Parent = Label
-            LabelStroke.Thickness = 1.2
-            LabelStroke.Transparency = 0.2
-            LabelStroke.Color = Color3.fromRGB(255, 255, 255)
+            LabelStroke.Parent = Label
+            LabelStroke.Thickness = 0.9
+            LabelStroke.Transparency = 0.3
+            LabelStroke.Color = Color3.fromRGB(0,0,0)
+            LabelStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+
 
             LabelTitle.Name = "LabelTitle"
             LabelTitle.Parent = Label
@@ -1181,9 +1197,11 @@ local TextboxStroke = Instance.new("UIStroke")
             TextboxCorner.Parent = Textbox
 
 TextboxStroke.Parent = Textbox
-            TextboxStroke.Thickness = 1.2
-            TextboxStroke.Transparency = 0.2
-            TextboxStroke.Color = Color3.fromRGB(255, 255, 255)
+            TextboxStroke.Thickness = 0.9
+            TextboxStroke.Transparency = 0.3
+            TextboxStroke.Color = Color3.fromRGB(0,0,0)
+            TextboxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
 
             TextboxTitle.Name = "TextboxTitle"
             TextboxTitle.Parent = Textbox
@@ -1229,7 +1247,7 @@ TextboxStroke.Parent = Textbox
 
             local Bind = Instance.new("TextButton")
             local BindCorner = Instance.new("UICorner")
-local BindStroke = Instance.new("UIStroke")
+            local BindStroke = Instance.new("UIStroke")
             local BindTitle = Instance.new("TextLabel")
             local BindText = Instance.new("TextLabel")
 
@@ -1244,10 +1262,11 @@ local BindStroke = Instance.new("UIStroke")
             BindCorner.CornerRadius = UDim.new(0, 5)
             BindCorner.Parent = Bind
 
-BindStroke.Parent = Bind
-            BindStroke.Thickness = 1.2
-            BindStroke.Transparency = 0.2
-            BindStroke.Color = Color3.fromRGB(255, 255, 255)
+            BindStroke.Parent = Bind
+            BindStroke.Thickness = 0.9
+            BindStroke.Transparency = 0.3
+            BindStroke.Color = Color3.fromRGB(0,0,0)
+            BindStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
             BindTitle.Name = "BindTitle"
             BindTitle.Parent = Bind
