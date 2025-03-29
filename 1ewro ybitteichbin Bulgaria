@@ -89,8 +89,8 @@ function QuickHacksUI:Window(text, preset, closebind)
 
     TabHoldStroke.Parent = TabHold
     TabHoldStroke.Color = Color3.fromRGB(0, 0, 0)
-    TabHoldStroke.Thickness = 1.2
-    TabHoldStroke.Transparency = 0.2
+    TabHoldStroke.Thickness = 1.5
+    TabHoldStroke.Transparency = 0.5
 
     TabHoldLayout.Name = "TabHoldLayout"
     TabHoldLayout.Parent = TabHold
@@ -171,19 +171,18 @@ function QuickHacksUI:Window(text, preset, closebind)
 
     function QuickHacksUI:Notification(texttitle, textdesc, textbtn1, textbtn2)
         local NotificationHold = Instance.new("TextButton")
-        local NotificationHoldCorner = Instance.new("UICorner")
         local NotificationFrame = Instance.new("Frame")
         local YesBtn = Instance.new("TextButton")
         local YesBtnCorner = Instance.new("UICorner")
-        local YesBtnStroke = Instance.new("UIStroke")
         local YesBtnTitle = Instance.new("TextLabel")
         local NoBtn = Instance.new("TextButton")
         local NoBtnCorner = Instance.new("UICorner")
-        local NoBtnStroke = Instance.new("UIStroke")
         local NoBtnTitle = Instance.new("TextLabel")
         local NotificationTitle = Instance.new("TextLabel")
         local NotificationDesc = Instance.new("TextLabel")
+        local NotificationCorner = Instance.new("UICorner")
         local NotificationStroke = Instance.new("UIStroke")
+        local NF = Instance.new("UICorner")
 
         NotificationHold.Name = "NotificationHold"
         NotificationHold.Parent = Main
@@ -196,8 +195,8 @@ function QuickHacksUI:Window(text, preset, closebind)
         NotificationHold.Text = ""
         NotificationHold.TextColor3 = Color3.fromRGB(0, 0, 0)
 
-        NotificationHoldCorner.CornerRadius = UDim.new(0, 12)
-        NotificationHoldCorner.Parent = NotificationHold
+        NotificationCorner.CornerRadius = UDim.new(0, 12)
+        NotificationCorner.Parent = NotificationHold
 
         TweenService:Create(NotificationHold, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0.6}):Play()
         wait(0.4)
@@ -211,10 +210,14 @@ function QuickHacksUI:Window(text, preset, closebind)
         NotificationFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
         NotificationFrame.Size = UDim2.new(0, 0, 0, 0)
         NotificationFrame:TweenSize(UDim2.new(0, 240, 0, 220), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.6, true)
+        
+        NF.CornerRadius = UDim.new(0, 12)
+        NF.Parent = NotificationFrame
+
 
         NotificationStroke.Color = Color3.fromRGB(100, 100, 100)
-        NotificationStroke.Thickness = 1.2
-        NotificationStroke.Transparency = 0.2
+        NotificationStroke.Thickness = 1.5
+        NotificationStroke.Transparency = 0.3
         NotificationStroke.Parent = NotificationFrame
 
         YesBtn.Name = "YesBtn"
@@ -228,11 +231,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
         YesBtnCorner.CornerRadius = UDim.new(0, 6)
         YesBtnCorner.Parent = YesBtn
-
-        YesBtnStroke.Parent = YesBtn
-        YesBtnStroke.Color = Color3.fromRGB(255, 255, 255)
-        YesBtnStroke.Thickness = 1.2
-        YesBtnStroke.Transparency = 0.2
 
         YesBtnTitle.Name = "YesBtnTitle"
         YesBtnTitle.Parent = YesBtn
@@ -254,11 +252,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
         NoBtnCorner.CornerRadius = UDim.new(0, 6)
         NoBtnCorner.Parent = NoBtn
-
-        NoBtnStroke.Parent = NoBtn
-        NoBtnStroke.Color = Color3.fromRGB(255, 255, 255)
-        NoBtnStroke.Thickness = 1.2
-        NoBtnStroke.Transparency = 0.2
 
         NoBtnTitle.Name = "NoBtnTitle"
         NoBtnTitle.Parent = NoBtn
@@ -331,7 +324,6 @@ function QuickHacksUI:Window(text, preset, closebind)
     function tabhold:Tab(text)
         local TabBtn = Instance.new("TextButton")
         local TabTitle = Instance.new("TextLabel")
-        local TabBtnStroke = Instance.new("UIStroke")
         local TabBtnIndicator = Instance.new("Frame")
         local TabBtnIndicatorCorner = Instance.new("UICorner")
 
@@ -351,11 +343,6 @@ function QuickHacksUI:Window(text, preset, closebind)
         TabTitle.TextColor3 = Color3.fromRGB(150, 150, 150)
         TabTitle.TextSize = 14
         TabTitle.TextXAlignment = Enum.TextXAlignment.Left
-
-        TabBtnStroke.Parent = TabBtn
-        TabBtnStroke.Color = Color3.fromRGB(255, 255, 255)
-        TabBtnStroke.Thickness = 1.2
-        TabBtnStroke.Transparency = 0.2
 
         TabBtnIndicator.Name = "TabBtnIndicator"
         TabBtnIndicator.Parent = TabBtn
@@ -387,8 +374,8 @@ function QuickHacksUI:Window(text, preset, closebind)
 
         TabStroke.Parent = Tab
         TabStroke.Color = Color3.fromRGB(0, 0, 0)
-        TabStroke.Thickness = 1.2
-        TabStroke.Transparency = 0.2
+        TabStroke.Thickness = 2.5
+        TabStroke.Transparency = 0.5
 
         TabLayout.Name = "TabLayout"
         TabLayout.Parent = Tab
@@ -421,7 +408,6 @@ function QuickHacksUI:Window(text, preset, closebind)
         function tabcontent:Button(text, callback)
             local Button = Instance.new("TextButton")
             local ButtonCorner = Instance.new("UICorner")
-            local ButtonStroke = Instance.new("UIStroke")
             local ButtonTitle = Instance.new("TextLabel")
 
             Button.Name = "Button"
@@ -434,11 +420,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             ButtonCorner.CornerRadius = UDim.new(0, 5)
             ButtonCorner.Parent = Button
-
-            ButtonStroke.Parent = Button
-            ButtonStroke.Color = Color3.fromRGB(255, 255, 255)
-            ButtonStroke.Thickness = 1.2
-            ButtonStroke.Transparency = 0.2
 
             ButtonTitle.Name = "ButtonTitle"
             ButtonTitle.Parent = Button
@@ -469,11 +450,10 @@ function QuickHacksUI:Window(text, preset, closebind)
             Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
         end
 
-        function tabcontent:Toggle(config)
-            local toggled = config.Default or false
+        function tabcontent:Toggle(text, default, callback)
+            local toggled = default or false
             local Toggle = Instance.new("TextButton")
             local ToggleCorner = Instance.new("UICorner")
-            local ToggleStroke = Instance.new("UIStroke")
             local ToggleTitle = Instance.new("TextLabel")
             local FrameToggle1 = Instance.new("Frame")
             local FrameToggle1Corner = Instance.new("UICorner")
@@ -495,18 +475,13 @@ function QuickHacksUI:Window(text, preset, closebind)
             ToggleCorner.CornerRadius = UDim.new(0, 5)
             ToggleCorner.Parent = Toggle
 
-            ToggleStroke.Parent = Toggle
-            ToggleStroke.Color = Color3.fromRGB(255, 255, 255)
-            ToggleStroke.Thickness = 1.2
-            ToggleStroke.Transparency = 0.2
-
             ToggleTitle.Name = "ToggleTitle"
             ToggleTitle.Parent = Toggle
             ToggleTitle.BackgroundTransparency = 1
             ToggleTitle.Position = UDim2.new(0.036, 0, 0, 0)
             ToggleTitle.Size = UDim2.new(0, 187, 0, 42)
             ToggleTitle.Font = Enum.Font.Gotham
-            ToggleTitle.Text = config.Name or "Unnamed Toggle"
+            ToggleTitle.Text = text or "Unnamed Toggle"
             ToggleTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
             ToggleTitle.TextSize = 14
             ToggleTitle.TextXAlignment = Enum.TextXAlignment.Left
@@ -564,37 +539,32 @@ function QuickHacksUI:Window(text, preset, closebind)
                     FrameToggleCircle:TweenPosition(UDim2.new(0.127, 0, 0.222, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
                 end
                 toggled = not toggled
-                pcall(config.Callback, toggled)
+                pcall(callback, toggled)
             end)
 
-            if toggled then
+            if default then
                 TweenService:Create(Toggle, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(37, 37, 37)}):Play()
                 TweenService:Create(FrameToggle1, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 1}):Play()
                 TweenService:Create(FrameToggle2, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 1}):Play()
                 TweenService:Create(FrameToggle3, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0}):Play()
                 TweenService:Create(FrameToggleCircle, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(255, 255, 255)}):Play()
                 FrameToggleCircle:TweenPosition(UDim2.new(0.587, 0, 0.222, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
+                toggled = true
+                pcall(callback, true)
             end
 
             Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
         end
 
-        function tabcontent:Slider(config)
+        function tabcontent:Slider(text, min, max, start, callback)
             local dragging = false
             local Slider = Instance.new("TextButton")
             local SliderCorner = Instance.new("UICorner")
-            local SliderStroke = Instance.new("UIStroke")
             local SliderTitle = Instance.new("TextLabel")
             local SliderValue = Instance.new("TextLabel")
             local SlideFrame = Instance.new("Frame")
             local CurrentValueFrame = Instance.new("Frame")
             local SlideCircle = Instance.new("ImageButton")
-
-            local Name = config.Name or "Unnamed Slider"
-            local Range = config.Range or {0, 100}
-            local Increment = config.Increment or 1
-            local Default = config.Value or Range[1]
-            local Callback = config.Callback or function() end
 
             Slider.Name = "Slider"
             Slider.Parent = Tab
@@ -607,18 +577,13 @@ function QuickHacksUI:Window(text, preset, closebind)
             SliderCorner.CornerRadius = UDim.new(0, 5)
             SliderCorner.Parent = Slider
 
-            SliderStroke.Parent = Slider
-            SliderStroke.Color = Color3.fromRGB(255, 255, 255)
-            SliderStroke.Thickness = 1.2
-            SliderStroke.Transparency = 0.2
-
             SliderTitle.Name = "SliderTitle"
             SliderTitle.Parent = Slider
             SliderTitle.BackgroundTransparency = 1
             SliderTitle.Position = UDim2.new(0.035, 0, 0, 0)
             SliderTitle.Size = UDim2.new(0, 187, 0, 42)
             SliderTitle.Font = Enum.Font.Gotham
-            SliderTitle.Text = Name
+            SliderTitle.Text = text or "Unnamed Slider"
             SliderTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
             SliderTitle.TextSize = 14
             SliderTitle.TextXAlignment = Enum.TextXAlignment.Left
@@ -629,7 +594,7 @@ function QuickHacksUI:Window(text, preset, closebind)
             SliderValue.Position = UDim2.new(0.035, 0, 0, 0)
             SliderValue.Size = UDim2.new(0, 335, 0, 42)
             SliderValue.Font = Enum.Font.Gotham
-            SliderValue.Text = tostring(Default)
+            SliderValue.Text = tostring(start and math.floor((start / max) * (max - min) + min) or 0)
             SliderValue.TextColor3 = Color3.fromRGB(255, 255, 255)
             SliderValue.TextSize = 14
             SliderValue.TextXAlignment = Enum.TextXAlignment.Right
@@ -645,12 +610,12 @@ function QuickHacksUI:Window(text, preset, closebind)
             CurrentValueFrame.Parent = SlideFrame
             CurrentValueFrame.BackgroundColor3 = PresetColor
             CurrentValueFrame.BorderSizePixel = 0
-            CurrentValueFrame.Size = UDim2.new((Default - Range[1]) / (Range[2] - Range[1]), 0, 0, 3)
+            CurrentValueFrame.Size = UDim2.new((start or 0) / max, 0, 0, 3)
 
             SlideCircle.Name = "SlideCircle"
             SlideCircle.Parent = SlideFrame
             SlideCircle.BackgroundTransparency = 1
-            SlideCircle.Position = UDim2.new((Default - Range[1]) / (Range[2] - Range[1]), -6, -1.304, 0)
+            SlideCircle.Position = UDim2.new((start or 0) / max, -6, -1.304, 0)
             SlideCircle.Size = UDim2.new(0, 11, 0, 11)
             SlideCircle.Image = "rbxassetid://3570695787"
             SlideCircle.ImageColor3 = PresetColor
@@ -664,12 +629,11 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             local function move(input)
                 local posX = math.clamp((input.Position.X - SlideFrame.AbsolutePosition.X) / SlideFrame.AbsoluteSize.X, 0, 1)
-                local value = math.floor(((posX * (Range[2] - Range[1])) + Range[1]) / Increment) * Increment
-                value = math.clamp(value, Range[1], Range[2])
-                SlideCircle.Position = UDim2.new((value - Range[1]) / (Range[2] - Range[1]), -6, -1.304, 0)
-                CurrentValueFrame.Size = UDim2.new((value - Range[1]) / (Range[2] - Range[1]), 0, 0, 3)
+                local value = math.floor((posX * (max - min)) + min)
+                SlideCircle.Position = UDim2.new(posX, -6, -1.304, 0)
+                CurrentValueFrame.Size = UDim2.new(posX, 0, 0, 3)
                 SliderValue.Text = tostring(value)
-                pcall(Callback, value)
+                pcall(callback, value)
             end
 
             SlideCircle.InputBegan:Connect(function(input)
@@ -691,8 +655,6 @@ function QuickHacksUI:Window(text, preset, closebind)
                 end
             end)
 
-            move({Position = Vector2.new(SlideFrame.AbsolutePosition.X + (SlideFrame.AbsoluteSize.X * ((Default - Range[1]) / (Range[2] - Range[1]))), 0)})
-
             Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
         end
 
@@ -703,7 +665,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             local Dropdown = Instance.new("Frame")
             local DropdownCorner = Instance.new("UICorner")
-            local DropdownStroke = Instance.new("UIStroke")
             local DropdownBtn = Instance.new("TextButton")
             local DropdownTitle = Instance.new("TextLabel")
             local ArrowImg = Instance.new("ImageLabel")
@@ -719,11 +680,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             DropdownCorner.CornerRadius = UDim.new(0, 5)
             DropdownCorner.Parent = Dropdown
-
-            DropdownStroke.Parent = Dropdown
-            DropdownStroke.Color = Color3.fromRGB(255, 255, 255)
-            DropdownStroke.Thickness = 1.2
-            DropdownStroke.Transparency = 0.2
 
             DropdownBtn.Name = "DropdownBtn"
             DropdownBtn.Parent = Dropdown
@@ -787,7 +743,6 @@ function QuickHacksUI:Window(text, preset, closebind)
                 end
                 local Item = Instance.new("TextButton")
                 local ItemCorner = Instance.new("UICorner")
-                local ItemStroke = Instance.new("UIStroke")
 
                 Item.Name = "Item"
                 Item.Parent = DropItemHolder
@@ -802,11 +757,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
                 ItemCorner.CornerRadius = UDim.new(0, 4)
                 ItemCorner.Parent = Item
-
-                ItemStroke.Parent = Item
-                ItemStroke.Color = Color3.fromRGB(255, 255, 255)
-                ItemStroke.Thickness = 1.2
-                ItemStroke.Transparency = 0.2
 
                 Item.MouseEnter:Connect(function()
                     TweenService:Create(Item, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(37, 37, 37)}):Play()
@@ -843,14 +793,12 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             local Colorpicker = Instance.new("Frame")
             local ColorpickerCorner = Instance.new("UICorner")
-            local ColorpickerStroke = Instance.new("UIStroke")
             local ColorpickerTitle = Instance.new("TextLabel")
             local BoxColor = Instance.new("Frame")
             local BoxColorCorner = Instance.new("UICorner")
             local ColorpickerBtn = Instance.new("TextButton")
             local RainbowToggle = Instance.new("TextButton")
             local RainbowToggleCorner = Instance.new("UICorner")
-            local RainbowToggleStroke = Instance.new("UIStroke")
             local RainbowToggleTitle = Instance.new("TextLabel")
             local FrameRainbowToggle1 = Instance.new("Frame")
             local FrameRainbowToggle1Corner = Instance.new("UICorner")
@@ -876,11 +824,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             ColorpickerCorner.CornerRadius = UDim.new(0, 5)
             ColorpickerCorner.Parent = Colorpicker
-
-            ColorpickerStroke.Parent = Colorpicker
-            ColorpickerStroke.Color = Color3.fromRGB(255, 255, 255)
-            ColorpickerStroke.Thickness = 1.2
-            ColorpickerStroke.Transparency = 0.2
 
             ColorpickerTitle.Name = "ColorpickerTitle"
             ColorpickerTitle.Parent = Colorpicker
@@ -920,11 +863,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             RainbowToggleCorner.CornerRadius = UDim.new(0, 5)
             RainbowToggleCorner.Parent = RainbowToggle
-
-            RainbowToggleStroke.Parent = RainbowToggle
-            RainbowToggleStroke.Color = Color3.fromRGB(255, 255, 255)
-            RainbowToggleStroke.Thickness = 1.2
-            RainbowToggleStroke.Transparency = 0.2
 
             RainbowToggleTitle.Name = "RainbowToggleTitle"
             RainbowToggleTitle.Parent = RainbowToggle
@@ -1058,7 +996,7 @@ function QuickHacksUI:Window(text, preset, closebind)
                 if not RainbowColorPicker and ColorPickerToggled then
                     local ColorX = math.clamp((input.Position.X - Color.AbsolutePosition.X) / Color.AbsoluteSize.X, 0, 1)
                     local ColorY = math.clamp((input.Position.Y - Color.AbsolutePosition.Y) / Color.AbsoluteSize.Y, 0, 1)
-                    ColorSelection.Position = UDim2.new(ColorX, 0, ColorY, 0)
+                    TweenService:Create(ColorSelection, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(ColorX, 0, ColorY, 0)}):Play()
                     ColorS = ColorX
                     ColorV = 1 - ColorY
                     UpdateColorPicker()
@@ -1068,7 +1006,7 @@ function QuickHacksUI:Window(text, preset, closebind)
             local function moveHue(input)
                 if not RainbowColorPicker and ColorPickerToggled then
                     local HueY = math.clamp((input.Position.Y - Hue.AbsolutePosition.Y) / Hue.AbsoluteSize.Y, 0, 1)
-                    HueSelection.Position = UDim2.new(0.48, 0, HueY, 0)
+                    TweenService:Create(HueSelection, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.48, 0, HueY, 0)}):Play()
                     ColorH = 1 - HueY
                     UpdateColorPicker()
                 end
@@ -1149,7 +1087,6 @@ function QuickHacksUI:Window(text, preset, closebind)
         function tabcontent:Label(text)
             local Label = Instance.new("TextButton")
             local LabelCorner = Instance.new("UICorner")
-            local LabelStroke = Instance.new("UIStroke")
             local LabelTitle = Instance.new("TextLabel")
 
             Label.Name = "Label"
@@ -1162,11 +1099,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             LabelCorner.CornerRadius = UDim.new(0, 5)
             LabelCorner.Parent = Label
-
-            LabelStroke.Parent = Label
-            LabelStroke.Color = Color3.fromRGB(255, 255, 255)
-            LabelStroke.Thickness = 1.2
-            LabelStroke.Transparency = 0.2
 
             LabelTitle.Name = "LabelTitle"
             LabelTitle.Parent = Label
@@ -1185,7 +1117,6 @@ function QuickHacksUI:Window(text, preset, closebind)
         function tabcontent:Textbox(text, disapper, callback)
             local Textbox = Instance.new("Frame")
             local TextboxCorner = Instance.new("UICorner")
-            local TextboxStroke = Instance.new("UIStroke")
             local TextboxTitle = Instance.new("TextLabel")
             local TextboxFrame = Instance.new("Frame")
             local TextboxFrameCorner = Instance.new("UICorner")
@@ -1199,11 +1130,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             TextboxCorner.CornerRadius = UDim.new(0, 5)
             TextboxCorner.Parent = Textbox
-
-            TextboxStroke.Parent = Textbox
-            TextboxStroke.Color = Color3.fromRGB(255, 255, 255)
-            TextboxStroke.Thickness = 1.2
-            TextboxStroke.Transparency = 0.2
 
             TextboxTitle.Name = "TextboxTitle"
             TextboxTitle.Parent = Textbox
@@ -1249,7 +1175,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             local Bind = Instance.new("TextButton")
             local BindCorner = Instance.new("UICorner")
-            local BindStroke = Instance.new("UIStroke")
             local BindTitle = Instance.new("TextLabel")
             local BindText = Instance.new("TextLabel")
 
@@ -1263,11 +1188,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             BindCorner.CornerRadius = UDim.new(0, 5)
             BindCorner.Parent = Bind
-
-            BindStroke.Parent = Bind
-            BindStroke.Color = Color3.fromRGB(255, 255, 255)
-            BindStroke.Thickness = 1.2
-            BindStroke.Transparency = 0.2
 
             BindTitle.Name = "BindTitle"
             BindTitle.Parent = Bind
@@ -1355,75 +1275,61 @@ function QuickHacksUI:Window(text, preset, closebind)
     local settingsTab
     local function createSettingsTab()
         settingsTab = tabhold:Tab("Settings")
-        settingsTab:Toggle({
-            Name = "Transparency",
-            Default = false,
-            Callback = function(state)
-                if state then
-                    Main.BackgroundTransparency = 0.5
-                    TabHoldStroke.Transparency = 1
-                    for _, tab in next, TabFolder:GetChildren() do
-                        if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
-                            tab.UIStroke.Transparency = 1
-                        end
-                        for _, item in next, tab:GetChildren() do
-                            if item:FindFirstChild("UIStroke") then
-                                item.UIStroke.Transparency = 1
-                            end
-                            if item.Name == "Dropdown" then
-                                for _, dropItem in next, item.DropItemHolder:GetChildren() do
-                                    if dropItem:FindFirstChild("UIStroke") then
-                                        dropItem.UIStroke.Transparency = 1
-                                    end
-                                end
-                            end
-                        end
+        settingsTab:Toggle("Transparency", false, function(state)
+            if state then
+                Main.BackgroundTransparency = 0.5
+                TabHoldStroke.Transparency = 1
+                for _, tab in next, TabFolder:GetChildren() do
+                    if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
+                        tab.UIStroke.Transparency = 1
                     end
-                else
-                    Main.BackgroundTransparency = 0
-                    TabHoldStroke.Transparency = 0.2
-                    for _, tab in next, TabFolder:GetChildren() do
-                        if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
-                            tab.UIStroke.Transparency = 0.2
-                        end
-                        for _, item in next, tab:GetChildren() do
-                            if item:FindFirstChild("UIStroke") then
-                                item.UIStroke.Transparency = 0.2
-                            end
-                            if item.Name == "Dropdown" then
-                                for _, dropItem in next, item.DropItemHolder:GetChildren() do
-                                    if dropItem:FindFirstChild("UIStroke") then
-                                        dropItem.UIStroke.Transparency = 0.2
-                                    end
-                                end
-                            end
-                        end
+                end
+            else
+                Main.BackgroundTransparency = 0
+                TabHoldStroke.Transparency = 0.5
+                for _, tab in next, TabFolder:GetChildren() do
+                    if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
+                        tab.UIStroke.Transparency = 0.5
                     end
                 end
             end
-        })
-
-        settingsTab:Slider({
-            Name = "Slider Example",
-            Range = {0, 100},
-            Increment = 10,
-            Value = 0,
-            Callback = function(value)
-            end
-        })
+        end)
 
         settingsTab:Bind("Toggle UI Visibility", Enum.KeyCode.RightControl, function()
-            if Main Size.X.Offset > 0 then
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0)}):Play()
+            if Main.Size.X.Offset > 0 then
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = Main.BackgroundTransparency}):Play()
             else
                 Main.Visible = true
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319)}):Play()
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319), BackgroundTransparency = Main.BackgroundTransparency}):Play()
             end
         end)
+
+        settingsTab:Colorpicker("Change Textures Color", Color3.fromRGB(44, 120, 224), function(t)
+            QuickHacksUI:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+        end)
+
+        for _, v in next, TabFolder:GetChildren() do
+            v.Visible = (v == settingsTab.Tab)
+        end
+        for _, v in next, TabHold:GetChildren() do
+            if v.Name == "TabBtn" then
+                v.TabBtnIndicator:TweenSize(UDim2.new(0, v == settingsTab.TabBtn and 13 or 0, 0, 2), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
+                TweenService:Create(v.TabTitle, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = v == settingsTab.TabBtn and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(150, 150, 150)}):Play()
+            end
+        end
     end
 
-    createSettingsTab()
+    local originalTab = tabhold.Tab
+    tabhold.Tab = function(self, text)
+        local tab = originalTab(self, text)
+        return tab
+    end
+
+    task.spawn(function()
+        wait()
+        createSettingsTab()
+    end)
+
     return tabhold
 end
-
 return QuickHacksUI
