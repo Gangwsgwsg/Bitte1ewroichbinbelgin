@@ -60,7 +60,7 @@ function QuickHacksUI:Window(text, preset, closebind)
     local Main = Instance.new("Frame")
     local MainCorner = Instance.new("UICorner")
     local TabHold = Instance.new("Frame")
-    local TabHoldStroke = Instance.new("UIStroke") -- Neu: UIStroke für TabHold
+    local TabHoldStroke = Instance.new("UIStroke")
     local TabHoldLayout = Instance.new("UIListLayout")
     local Title = Instance.new("TextLabel")
     local TabFolder = Instance.new("Folder")
@@ -87,9 +87,8 @@ function QuickHacksUI:Window(text, preset, closebind)
     TabHold.Position = UDim2.new(0.034, 0, 0.147, 0)
     TabHold.Size = UDim2.new(0, 107, 0, 254)
 
-    -- UIStroke für TabHold hinzufügen
     TabHoldStroke.Parent = TabHold
-    TabHoldStroke.Color = Color3.fromRGB(0, 0, 0) -- Schwarz
+    TabHoldStroke.Color = Color3.fromRGB(0, 0, 0)
     TabHoldStroke.Thickness = 1.5
     TabHoldStroke.Transparency = 0.5
 
@@ -128,12 +127,17 @@ function QuickHacksUI:Window(text, preset, closebind)
         MobileBtn.Name = "MobileBtn"
         MobileBtn.Parent = ui
         MobileBtn.BackgroundTransparency = 1
-        MobileBtn.Position = UDim2.new(0.95, 0, 0.5, 0)
-        MobileBtn.Size = UDim2.new(0, 50, 0, 50)
+        MobileBtn.Position = UDim2.new(0.949999988, -74, 0.5, -42)
+        MobileBtn.Size = UDim2.new(0, 65, 0, 65)
         MobileBtn.Image = "rbxassetid://3570695787"
         MakeDraggable(MobileBtn, MobileBtn)
         MobileBtn.MouseButton1Click:Connect(function()
-            Main.Visible = not Main.Visible
+            if Main.Size.X.Offset > 0 then
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = Main.BackgroundTransparency}):Play()
+            else
+                Main.Visible = true
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319), BackgroundTransparency = Main.BackgroundTransparency}):Play()
+            end
         end)
     end
 
@@ -148,13 +152,11 @@ function QuickHacksUI:Window(text, preset, closebind)
     UserInputService.InputBegan:Connect(function(io, p)
         if io.KeyCode == CloseBind then
             if uitoggled == false then
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 0.5}):Play()
-                wait(0.5)
-                Main.Visible = false
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = Main.BackgroundTransparency}):Play()
                 uitoggled = true
             else
                 Main.Visible = true
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319), BackgroundTransparency = 0}):Play()
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319), BackgroundTransparency = Main.BackgroundTransparency}):Play()
                 uitoggled = false
             end
         end
@@ -192,6 +194,9 @@ function QuickHacksUI:Window(text, preset, closebind)
         NotificationHold.Text = ""
         NotificationHold.TextColor3 = Color3.fromRGB(0, 0, 0)
 
+        NotificationCorner.CornerRadius = UDim.new(0, 12)
+        NotificationCorner.Parent = NotificationHold
+
         TweenService:Create(NotificationHold, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0.6}):Play()
         wait(0.4)
 
@@ -203,10 +208,7 @@ function QuickHacksUI:Window(text, preset, closebind)
         NotificationFrame.ClipsDescendants = true
         NotificationFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
         NotificationFrame.Size = UDim2.new(0, 0, 0, 0)
-        NotificationFrame:TweenSize(UDim2.new(0, 240, 0, 250), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.6, true)
-
-        NotificationCorner.CornerRadius = UDim.new(0, 10)
-        NotificationCorner.Parent = NotificationFrame
+        NotificationFrame:TweenSize(UDim2.new(0, 240, 0, 220), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.6, true)
 
         NotificationStroke.Color = Color3.fromRGB(100, 100, 100)
         NotificationStroke.Thickness = 1.5
@@ -351,7 +353,7 @@ function QuickHacksUI:Window(text, preset, closebind)
         end)()
 
         local Tab = Instance.new("ScrollingFrame")
-        local TabStroke = Instance.new("UIStroke") -- Neu: UIStroke für Tabs
+        local TabStroke = Instance.new("UIStroke")
         local TabLayout = Instance.new("UIListLayout")
 
         Tab.Name = "Tab"
@@ -365,9 +367,8 @@ function QuickHacksUI:Window(text, preset, closebind)
         Tab.ScrollBarThickness = 3
         Tab.Visible = false
 
-        -- UIStroke für Tab hinzufügen
         TabStroke.Parent = Tab
-        TabStroke.Color = Color3.fromRGB(0, 0, 0) -- Schwarz (Standardfarbe)
+        TabStroke.Color = Color3.fromRGB(0, 0, 0)
         TabStroke.Thickness = 2.5
         TabStroke.Transparency = 0.5
 
@@ -624,8 +625,8 @@ function QuickHacksUI:Window(text, preset, closebind)
             local function move(input)
                 local posX = math.clamp((input.Position.X - SlideFrame.AbsolutePosition.X) / SlideFrame.AbsoluteSize.X, 0, 1)
                 local value = math.floor((posX * (max - min)) + min)
-                TweenService:Create(SlideCircle, TweenInfo.new(0.015, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(posX, -6, -1.304, 0)}):Play()
-                TweenService:Create(CurrentValueFrame, TweenInfo.new(0.015, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(posX, 0, 0, 3)}):Play()
+                SlideCircle.Position = UDim2.new(posX, -6, -1.304, 0)
+                CurrentValueFrame.Size = UDim2.new(posX, 0, 0, 3)
                 SliderValue.Text = tostring(value)
                 pcall(callback, value)
             end
@@ -1272,7 +1273,6 @@ function QuickHacksUI:Window(text, preset, closebind)
         settingsTab:Toggle("Transparency", false, function(state)
             if state then
                 Main.BackgroundTransparency = 0.5
-                -- UIStroke-Transparenz auf 1 setzen
                 TabHoldStroke.Transparency = 1
                 for _, tab in next, TabFolder:GetChildren() do
                     if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
@@ -1281,7 +1281,6 @@ function QuickHacksUI:Window(text, preset, closebind)
                 end
             else
                 Main.BackgroundTransparency = 0
-                -- UIStroke-Transparenz auf 0.5 zurücksetzen
                 TabHoldStroke.Transparency = 0.5
                 for _, tab in next, TabFolder:GetChildren() do
                     if tab:IsA("ScrollingFrame") and tab:FindFirstChild("UIStroke") then
@@ -1292,17 +1291,14 @@ function QuickHacksUI:Window(text, preset, closebind)
         end)
 
         settingsTab:Bind("Toggle UI Visibility", Enum.KeyCode.RightControl, function()
-            if Main.Visible then
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 0.5}):Play()
-                wait(0.5)
-                Main.Visible = false
+            if Main.Size.X.Offset > 0 then
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = Main.BackgroundTransparency}):Play()
             else
                 Main.Visible = true
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319), BackgroundTransparency = 0}):Play()
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319), BackgroundTransparency = Main.BackgroundTransparency}):Play()
             end
         end)
 
-        -- Korrigierter Colorpicker
         settingsTab:Colorpicker("Change Textures Color", Color3.fromRGB(44, 120, 224), function(t)
             QuickHacksUI:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
         end)
