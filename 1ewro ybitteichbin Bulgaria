@@ -1147,44 +1147,48 @@ ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
         end
 
         function tabcontent:Label(text)
-            local Label = Instance.new("TextButton")
-            local LabelCorner = Instance.new("UICorner")
-            local LabelTitle = Instance.new("TextLabel")
-            local LabelStroke = Instance.new("UIStroke")
+    local Label = Instance.new("TextButton")
+    local LabelCorner = Instance.new("UICorner")
+    local LabelTitle = Instance.new("TextLabel")
+    local LabelStroke = Instance.new("UIStroke")
 
+    Label.Name = "Label"
+    Label.Parent = Tab
+    Label.BackgroundColor3 = CurrentUIBackgroundColor
+    Label.Size = UDim2.new(0, 363, 0, 42)
+    Label.AutoButtonColor = false
+    Label.Font = Enum.Font.SourceSans
+    Label.Text = ""
 
-            Label.Name = "Label"
-            Label.Parent = Tab
-            Label.BackgroundColor3 = CurrentUIBackgroundColor
-            Label.Size = UDim2.new(0, 363, 0, 42)
-            Label.AutoButtonColor = false
-            Label.Font = Enum.Font.SourceSans
-            Label.Text = ""
+    LabelCorner.CornerRadius = UDim.new(0, 5)
+    LabelCorner.Parent = Label
 
-            LabelCorner.CornerRadius = UDim.new(0, 5)
-            LabelCorner.Parent = Label
+    LabelStroke.Parent = Label
+    LabelStroke.Thickness = 0.9
+    LabelStroke.Transparency = 0.3
+    LabelStroke.Color = Color3.fromRGB(0,0,0)
+    LabelStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
-            LabelStroke.Parent = Label
-            LabelStroke.Thickness = 0.9
-            LabelStroke.Transparency = 0.3
-            LabelStroke.Color = Color3.fromRGB(0,0,0)
-            LabelStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    LabelTitle.Name = "LabelTitle"
+    LabelTitle.Parent = Label
+    LabelTitle.BackgroundTransparency = 1
+    LabelTitle.Position = UDim2.new(0.036, 0, 0, 0)
+    LabelTitle.Size = UDim2.new(0, 187, 0, 42)
+    LabelTitle.Font = Enum.Font.Gotham
+    LabelTitle.Text = text or "Unnamed Label"
+    LabelTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    LabelTitle.TextSize = 14
+    LabelTitle.TextXAlignment = Enum.TextXAlignment.Left
 
+    Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
 
+    local labelFunctions = {}
+    function labelFunctions:SetText(newText)
+        LabelTitle.Text = newText or "Unnamed Label"
+    end
 
-            LabelTitle.Name = "LabelTitle"
-            LabelTitle.Parent = Label
-            LabelTitle.BackgroundTransparency = 1
-            LabelTitle.Position = UDim2.new(0.036, 0, 0, 0)
-            LabelTitle.Size = UDim2.new(0, 187, 0, 42)
-            LabelTitle.Font = Enum.Font.Gotham
-            LabelTitle.Text = text or "Unnamed Label"
-            LabelTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-            LabelTitle.TextSize = 14
-            LabelTitle.TextXAlignment = Enum.TextXAlignment.Left
-
-            Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
-        end
+    return labelFunctions
+end
 
         function tabcontent:Textbox(text, disapper, callback)
             local Textbox = Instance.new("Frame")
@@ -1327,34 +1331,114 @@ TextboxStroke.Parent = Textbox
                         elseif input.UserInputType == Enum.UserInputType.MouseButton1 then
                             newKey = "MouseLeft"
                         elseif input.UserInputType == Enum.UserInputType.MouseButton2 then
-                            newKey = "MouseRight"
-                        end
+function tabcontent:Bind(text, keypreset, callback)
+    local Key = keypreset.Name
+    local Binding = false
 
-                        if newKey and newKey ~= "Unknown" then
-                            Binding = false
-                            BindText.Text = newKey
-                            Key = newKey
-                            inputEvent:Disconnect()
-                            if animationTask then
-                                task.cancel(animationTask)
-                            end
-                        end
-                    end)
+    local Bind = Instance.new("TextButton")
+    local BindCorner = Instance.new("UICorner")
+    local BindStroke = Instance.new("UIStroke")
+    local BindTitle = Instance.new("TextLabel")
+    local BindText = Instance.new("TextLabel")
+
+    Bind.Name = "Bind"
+    Bind.Parent = Tab
+    Bind.BackgroundColor3 = CurrentUIBackgroundColor
+    Bind.Size = UDim2.new(0, 363, 0, 42)
+    Bind.AutoButtonColor = false
+    Bind.Font = Enum.Font.SourceSans
+    Bind.Text = ""
+
+    BindCorner.CornerRadius = UDim.new(0, 5)
+    BindCorner.Parent = Bind
+
+    BindStroke.Parent = Bind
+    BindStroke.Thickness = 0.9
+    BindStroke.Transparency = 0.3
+    BindStroke.Color = Color3.fromRGB(0,0,0)
+    BindStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+    BindTitle.Name = "BindTitle"
+    BindTitle.Parent = Bind
+    BindTitle.BackgroundTransparency = 1
+    BindTitle.Position = UDim2.new(0.036, 0, 0, 0)
+    BindTitle.Size = UDim2.new(0, 187, 0, 42)
+    BindTitle.Font = Enum.Font.Gotham
+    BindTitle.Text = text or "Unnamed Bind"
+    BindTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    BindTitle.TextSize = 14
+    BindTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+    BindText.Name = "BindText"
+    BindText.Parent = Bind
+    BindText.BackgroundTransparency = 1
+    BindText.Position = UDim2.new(0.036, 0, 0, 0)
+    BindText.Size = UDim2.new(0, 337, 0, 42)
+    BindText.Font = Enum.Font.Gotham
+    BindText.Text = Key
+    BindText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    BindText.TextSize = 14
+    BindText.TextXAlignment = Enum.TextXAlignment.Right
+
+    Bind.MouseButton1Click:Connect(function()
+        if not Binding then
+            Binding = true
+            BindText.Text = ""
+            TweenService:Create(Bind, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(0, 300, 0, 35)}):Play()
+
+            local dots = 0
+            local animationTask
+            animationTask = task.spawn(function()
+                while Binding do
+                    if dots == 0 then
+                        BindText.Text = "."
+                    elseif dots == 1 then
+                        BindText.Text = ".."
+                    elseif dots == 2 then
+                        BindText.Text = "..."
+                    end
+                    dots = (dots + 1) % 3
+                    task.wait(0.3)
                 end
             end)
 
-            UserInputService.InputBegan:Connect(function(input)
-                if not Binding and input.KeyCode.Name == Key then
-                    pcall(callback, input.KeyCode.Name)
-                elseif not Binding and Key == "MouseLeft" and input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    pcall(callback, "MouseLeft")
-                elseif not Binding and Key == "MouseRight" and input.UserInputType == Enum.UserInputType.MouseButton2 then
-                    pcall(callback, "MouseRight")
+            local inputEvent
+            inputEvent = UserInputService.InputBegan:Connect(function(input)
+                local newKey
+                if input.UserInputType == Enum.UserInputType.Keyboard then
+                    newKey = input.KeyCode.Name
+                elseif input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    newKey = "MouseLeft"
+                elseif input.UserInputType == Enum.UserInputType.MouseButton2 then
+                    newKey = "MouseRight"
+                end
+
+                if newKey and newKey ~= "Unknown" then
+                    Binding = false
+                    BindText.Text = newKey
+                    Key = newKey
+                    TweenService:Create(Bind, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(0, 363, 0, 42)}):Play()
+                    inputEvent:Disconnect()
+                    if animationTask then
+                        task.cancel(animationTask)
+                    end
                 end
             end)
-
-            Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
         end
+    end)
+
+    UserInputService.InputBegan:Connect(function(input)
+        if not Binding and input.KeyCode.Name == Key then
+            pcall(callback, input.KeyCode.Name)
+        elseif not Binding and Key == "MouseLeft" and input.UserInputType == Enum.UserInputType.MouseButton1 then
+            pcall(callback, "MouseLeft")
+        elseif not Binding and Key == "MouseRight" and input.UserInputType == Enum.UserInputType.MouseButton2 then
+            pcall(callback, "MouseRight")
+        end
+    end)
+
+    Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
+end
 
         return tabcontent
     end
