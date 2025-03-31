@@ -53,41 +53,12 @@ local function MakeDraggable(topbarobject, object)
     end)
 end
 
-local function MakeResizable(object, resizeHandle)
-    local Dragging, DragInput, DragStart, StartSize
-    local function Update(input)
-        local Delta = input.Position - DragStart
-        local newSize = UDim2.new(0, math.max(300, StartSize.X.Offset + Delta.X), 0, math.max(200, StartSize.Y.Offset + Delta.Y))
-        TweenService:Create(object, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = newSize}):Play()
-    end
-    resizeHandle.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            Dragging = true
-            DragStart = input.Position
-            StartSize = object.Size
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then Dragging = false end
-            end)
-        end
-    end)
-    resizeHandle.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            DragInput = input
-        end
-    end)
-    UserInputService.InputChanged:Connect(function(input)
-        if input == DragInput and Dragging then Update(input) end
-    end)
-end
-
 function QuickHacksUI:Window(text, preset, closebind)
     CloseBind = closebind or Enum.KeyCode.RightControl
     PresetColor = preset or Color3.fromRGB(44, 120, 224)
     local fs = false
     local Main = Instance.new("Frame")
     local MainCorner = Instance.new("UICorner")
-    local Header = Instance.new("Frame") -- 1. Header hinzufügen
-    local HeaderTitle = Instance.new("TextLabel")
     local TabHold = Instance.new("Frame")
     local TabHoldStroke = Instance.new("UIStroke")
     local TabHoldLayout = Instance.new("UIListLayout")
@@ -96,7 +67,9 @@ function QuickHacksUI:Window(text, preset, closebind)
     local DragFrame = Instance.new("Frame")
     local MobileBtn = Instance.new("ImageButton")
     local CloseBtn = Instance.new("TextButton")
-    local ResizeHandle = Instance.new("Frame") -- 7. Resizable UI
+    local Mobilebt = Instance.new("UICorner")
+
+
 
     Main.Name = "Main"
     Main.Parent = ui
@@ -110,23 +83,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
     MainCorner.CornerRadius = UDim.new(0, 12)
     MainCorner.Parent = Main
-
-    Header.Name = "Header"
-    Header.Parent = Main
-    Header.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    Header.Size = UDim2.new(1, 0, 0, 40)
-    Header.Position = UDim2.new(0, 0, 0, 0)
-
-    HeaderTitle.Name = "HeaderTitle"
-    HeaderTitle.Parent = Header
-    HeaderTitle.BackgroundTransparency = 1
-    HeaderTitle.Position = UDim2.new(0.02, 0, 0, 0)
-    HeaderTitle.Size = UDim2.new(0.96, 0, 1, 0)
-    HeaderTitle.Font = Enum.Font.GothamBold
-    HeaderTitle.Text = text .. " - QuickHacks"
-    HeaderTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    HeaderTitle.TextSize = 16
-    HeaderTitle.TextXAlignment = Enum.TextXAlignment.Left
 
     TabHold.Name = "TabHold"
     TabHold.Parent = Main
@@ -161,59 +117,53 @@ function QuickHacksUI:Window(text, preset, closebind)
     DragFrame.Size = UDim2.new(0, 560, 0, 41)
 
     CloseBtn.Name = "CloseBtn"
-    CloseBtn.Parent = Header
+    CloseBtn.Parent = Main
     CloseBtn.BackgroundTransparency = 1
-    CloseBtn.Position = UDim2.new(0.95, 0, 0.1, 0)
+    CloseBtn.Position = UDim2.new(0.95, 0, 0.056, 0)
     CloseBtn.Size = UDim2.new(0, 20, 0, 20)
     CloseBtn.Font = Enum.Font.GothamBold
     CloseBtn.Text = "X"
     CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
     CloseBtn.TextSize = 16
 
-    ResizeHandle.Name = "ResizeHandle"
-    ResizeHandle.Parent = Main
-    ResizeHandle.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-    ResizeHandle.Size = UDim2.new(0, 10, 0, 10)
-    ResizeHandle.Position = UDim2.new(1, -10, 1, -10)
-    ResizeHandle.ZIndex = 10
+Mobilebt.CornerRadius = UDim.new(1, 10)
+            Mobilebt.Parent = MobileBtn
 
     if UserInputService.TouchEnabled then
         MobileBtn.Name = "MobileBtn"
         MobileBtn.Parent = ui
         MobileBtn.BackgroundTransparency = 1
-        MobileBtn.Position = UDim2.new(0.95, -74, 0.5, -42)
+        MobileBtn.Position = UDim2.new(0.949999988, -74, 0.5, -42)
         MobileBtn.Size = UDim2.new(0, 65, 0, 65)
         MobileBtn.Image = "rbxassetid://130039636229325"
         MakeDraggable(MobileBtn, MobileBtn)
         MobileBtn.MouseButton1Click:Connect(function()
             if Main.Size.X.Offset > 0 then
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0)}):Play()
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = Main.BackgroundTransparency}):Play()
             else
                 Main.Visible = true
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319)}):Play()
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319), BackgroundTransparency = Main.BackgroundTransparency}):Play()
             end
         end)
     end
 
     Main:TweenSize(UDim2.new(0, 560, 0, 319), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.6, true)
-    MakeDraggable(Header, Main) -- Header als Drag-Handle
-    MakeResizable(Main, ResizeHandle) -- Resizable UI
+    MakeDraggable(DragFrame, Main)
 
+    
     CloseBtn.MouseButton1Click:Connect(function()
-        QuickHacksUI:Notification("Close UI", "Are you sure you want to close?", "Yes", "No", function(confirmed)
-            if confirmed then ui:Destroy() end
-        end)
+        QuickHacksUI:Notification("Close UI", "Are you sure?", "Yes", "No")
     end)
 
     local uitoggled = false
     UserInputService.InputBegan:Connect(function(io, p)
         if io.KeyCode == CloseBind then
             if uitoggled == false then
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0)}):Play()
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = Main.BackgroundTransparency}):Play()
                 uitoggled = true
             else
                 Main.Visible = true
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319)}):Play()
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319), BackgroundTransparency = Main.BackgroundTransparency}):Play()
                 uitoggled = false
             end
         end
@@ -226,7 +176,7 @@ function QuickHacksUI:Window(text, preset, closebind)
         PresetColor = toch
     end
 
-    function QuickHacksUI:Notification(texttitle, textdesc, textbtn1, textbtn2, callback)
+    function QuickHacksUI:Notification(texttitle, textdesc, textbtn1, textbtn2)
         local NotificationHold = Instance.new("TextButton")
         local NotificationFrame = Instance.new("Frame")
         local YesBtn = Instance.new("TextButton")
@@ -238,6 +188,8 @@ function QuickHacksUI:Window(text, preset, closebind)
         local NotificationTitle = Instance.new("TextLabel")
         local NotificationDesc = Instance.new("TextLabel")
         local NotificationCorner = Instance.new("UICorner")
+        local NotificationStroke = Instance.new("UIStroke")
+        local NF = Instance.new("UICorner")
 
         NotificationHold.Name = "NotificationHold"
         NotificationHold.Parent = Main
@@ -248,6 +200,7 @@ function QuickHacksUI:Window(text, preset, closebind)
         NotificationHold.AutoButtonColor = false
         NotificationHold.Font = Enum.Font.SourceSans
         NotificationHold.Text = ""
+        NotificationHold.TextColor3 = Color3.fromRGB(0, 0, 0)
 
         NotificationCorner.CornerRadius = UDim.new(0, 12)
         NotificationCorner.Parent = NotificationHold
@@ -264,6 +217,15 @@ function QuickHacksUI:Window(text, preset, closebind)
         NotificationFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
         NotificationFrame.Size = UDim2.new(0, 0, 0, 0)
         NotificationFrame:TweenSize(UDim2.new(0, 240, 0, 220), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.6, true)
+        
+        NF.CornerRadius = UDim.new(0, 12)
+        NF.Parent = NotificationFrame
+
+
+        NotificationStroke.Color = Color3.fromRGB(100, 100, 100)
+        NotificationStroke.Thickness = 1.5
+        NotificationStroke.Transparency = 0.3
+        NotificationStroke.Parent = NotificationFrame
 
         YesBtn.Name = "YesBtn"
         YesBtn.Parent = NotificationFrame
@@ -331,13 +293,29 @@ function QuickHacksUI:Window(text, preset, closebind)
         NotificationDesc.TextXAlignment = Enum.TextXAlignment.Left
         NotificationDesc.TextYAlignment = Enum.TextYAlignment.Top
 
+        YesBtn.MouseEnter:Connect(function()
+            TweenService:Create(YesBtn, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(60, 60, 60)}):Play()
+        end)
+
+        YesBtn.MouseLeave:Connect(function()
+            TweenService:Create(YesBtn, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(50, 50, 50)}):Play()
+        end)
+
+        NoBtn.MouseEnter:Connect(function()
+            TweenService:Create(NoBtn, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(60, 60, 60)}):Play()
+        end)
+
+        NoBtn.MouseLeave:Connect(function()
+            TweenService:Create(NoBtn, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(50, 50, 50)}):Play()
+        end)
+
         YesBtn.MouseButton1Click:Connect(function()
             NotificationFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.6, true)
             wait(0.4)
             TweenService:Create(NotificationHold, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 1}):Play()
             wait(0.3)
+            ui:Destroy()
             NotificationHold:Destroy()
-            pcall(callback, true)
         end)
 
         NoBtn.MouseButton1Click:Connect(function()
@@ -346,7 +324,6 @@ function QuickHacksUI:Window(text, preset, closebind)
             TweenService:Create(NotificationHold, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 1}):Play()
             wait(0.3)
             NotificationHold:Destroy()
-            pcall(callback, false)
         end)
     end
 
@@ -356,7 +333,6 @@ function QuickHacksUI:Window(text, preset, closebind)
         local TabTitle = Instance.new("TextLabel")
         local TabBtnIndicator = Instance.new("Frame")
         local TabBtnIndicatorCorner = Instance.new("UICorner")
-        local TabIcon = Instance.new("ImageLabel") -- 4. Icons hinzufügen
 
         TabBtn.Name = "TabBtn"
         TabBtn.Parent = TabHold
@@ -365,18 +341,10 @@ function QuickHacksUI:Window(text, preset, closebind)
         TabBtn.Font = Enum.Font.SourceSans
         TabBtn.Text = ""
 
-        TabIcon.Name = "TabIcon"
-        TabIcon.Parent = TabBtn
-        TabIcon.BackgroundTransparency = 1
-        TabIcon.Position = UDim2.new(0, 0, 0, 0)
-        TabIcon.Size = UDim2.new(0, 20, 0, 20)
-        TabIcon.Image = "rbxassetid://6035043918" -- Beispiel-Icon, kann angepasst werden
-
         TabTitle.Name = "TabTitle"
         TabTitle.Parent = TabBtn
         TabTitle.BackgroundTransparency = 1
-        TabTitle.Position = UDim2.new(0.25, 0, 0, 0)
-        TabTitle.Size = UDim2.new(0, 87, 0, 21)
+        TabTitle.Size = UDim2.new(0, 107, 0, 21)
         TabTitle.Font = Enum.Font.Gotham
         TabTitle.Text = text
         TabTitle.TextColor3 = Color3.fromRGB(150, 150, 150)
@@ -449,8 +417,7 @@ function QuickHacksUI:Window(text, preset, closebind)
             local ButtonCorner = Instance.new("UICorner")
             local ButtonTitle = Instance.new("TextLabel")
             local ButtonStroke = Instance.new("UIStroke")
-            local ButtonIcon = Instance.new("ImageLabel") -- 4. Icons hinzufügen
-            local Tooltip = Instance.new("TextLabel") -- 2. Tooltips hinzufügen
+
 
             Button.Name = "Button"
             Button.Parent = Tab
@@ -464,22 +431,16 @@ function QuickHacksUI:Window(text, preset, closebind)
             ButtonCorner.Parent = Button
 
             ButtonStroke.Parent = Button
-            ButtonStroke.Thickness = 1
-            ButtonStroke.Transparency = 0.3
-            ButtonStroke.Color = Color3.fromRGB(0, 0, 0)
-            ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+ButtonStroke.Thickness = 1
+ButtonStroke.Transparency = 0.3
+ButtonStroke.Color = Color3.fromRGB(0, 0, 0)
+ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
-            ButtonIcon.Name = "ButtonIcon"
-            ButtonIcon.Parent = Button
-            ButtonIcon.BackgroundTransparency = 1
-            ButtonIcon.Position = UDim2.new(0.02, 0, 0.1, 0)
-            ButtonIcon.Size = UDim2.new(0, 20, 0, 20)
-            ButtonIcon.Image = "rbxassetid://6034830842" -- Beispiel-Icon
 
             ButtonTitle.Name = "ButtonTitle"
             ButtonTitle.Parent = Button
             ButtonTitle.BackgroundTransparency = 1
-            ButtonTitle.Position = UDim2.new(0.1, 0, 0, 0)
+            ButtonTitle.Position = UDim2.new(0.036, 0, 0, 0)
             ButtonTitle.Size = UDim2.new(0, 187, 0, 42)
             ButtonTitle.Font = Enum.Font.Gotham
             ButtonTitle.Text = text or "Unnamed Button"
@@ -487,35 +448,18 @@ function QuickHacksUI:Window(text, preset, closebind)
             ButtonTitle.TextSize = 14
             ButtonTitle.TextXAlignment = Enum.TextXAlignment.Left
 
-            Tooltip.Name = "Tooltip"
-            Tooltip.Parent = Button
-            Tooltip.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-            Tooltip.BackgroundTransparency = 1
-            Tooltip.Position = UDim2.new(0, 0, 1, 5)
-            Tooltip.Size = UDim2.new(0, 200, 0, 20)
-            Tooltip.Font = Enum.Font.Gotham
-            Tooltip.Text = "Click to " .. text:lower()
-            Tooltip.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Tooltip.TextSize = 12
-            Tooltip.TextXAlignment = Enum.TextXAlignment.Left
-            Tooltip.ZIndex = 10
-            Tooltip.Visible = false
-
             Button.MouseEnter:Connect(function()
                 TweenService:Create(Button, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(37, 37, 37)}):Play()
-                Tooltip.Visible = true
             end)
 
             Button.MouseLeave:Connect(function()
                 TweenService:Create(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = CurrentUIBackgroundColor}):Play()
-                Tooltip.Visible = false
             end)
 
             Button.MouseButton1Click:Connect(function()
                 TweenService:Create(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.02, 0, 0, 0)}):Play()
                 wait(0.1)
                 TweenService:Create(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0, 0, 0, 0)}):Play()
-                QuickHacksUI:Notification("Action", text .. " triggered!", "OK", "", function() end) -- 6. Confirmation Message
                 pcall(callback)
             end)
 
@@ -536,8 +480,7 @@ function QuickHacksUI:Window(text, preset, closebind)
             local FrameToggleCircle = Instance.new("Frame")
             local FrameToggleCircleCorner = Instance.new("UICorner")
             local ToggleStroke = Instance.new("UIStroke")
-            local Tooltip = Instance.new("TextLabel") -- 2. Tooltips
-
+           
             Toggle.Name = "Toggle"
             Toggle.Parent = Tab
             Toggle.BackgroundColor3 = CurrentUIBackgroundColor
@@ -552,7 +495,7 @@ function QuickHacksUI:Window(text, preset, closebind)
             ToggleStroke.Parent = Toggle
             ToggleStroke.Thickness = 1.2
             ToggleStroke.Transparency = 0.2
-            ToggleStroke.Color = Color3.fromRGB(0, 0, 0)
+            ToggleStroke.Color = Color3.fromRGB(0 , 0 , 0 )
             ToggleStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
             ToggleTitle.Name = "ToggleTitle"
@@ -573,6 +516,7 @@ function QuickHacksUI:Window(text, preset, closebind)
             FrameToggle1.Size = UDim2.new(0, 37, 0, 18)
 
             FrameToggle1Corner.Parent = FrameToggle1
+
 
             FrameToggle2.Name = "FrameToggle2"
             FrameToggle2.Parent = FrameToggle1
@@ -598,20 +542,6 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             FrameToggleCircleCorner.Parent = FrameToggleCircle
 
-            Tooltip.Name = "Tooltip"
-            Tooltip.Parent = Toggle
-            Tooltip.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-            Tooltip.BackgroundTransparency = 1
-            Tooltip.Position = UDim2.new(0, 0, 1, 5)
-            Tooltip.Size = UDim2.new(0, 200, 0, 20)
-            Tooltip.Font = Enum.Font.Gotham
-            Tooltip.Text = "Toggle " .. text:lower()
-            Tooltip.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Tooltip.TextSize = 12
-            Tooltip.TextXAlignment = Enum.TextXAlignment.Left
-            Tooltip.ZIndex = 10
-            Tooltip.Visible = false
-
             coroutine.wrap(function()
                 while wait() do FrameToggle3.BackgroundColor3 = PresetColor end
             end)()
@@ -634,14 +564,6 @@ function QuickHacksUI:Window(text, preset, closebind)
                 end
                 toggled = not toggled
                 pcall(callback, toggled)
-            end)
-
-            Toggle.MouseEnter:Connect(function()
-                Tooltip.Visible = true
-            end)
-
-            Toggle.MouseLeave:Connect(function()
-                Tooltip.Visible = false
             end)
 
             if default then
@@ -668,7 +590,7 @@ function QuickHacksUI:Window(text, preset, closebind)
             local CurrentValueFrame = Instance.new("Frame")
             local SlideCircle = Instance.new("ImageButton")
             local SliderStroke = Instance.new("UIStroke")
-            local Tooltip = Instance.new("TextLabel") -- 2. Tooltips
+
 
             Slider.Name = "Slider"
             Slider.Parent = Tab
@@ -684,8 +606,9 @@ function QuickHacksUI:Window(text, preset, closebind)
             SliderStroke.Parent = Slider
             SliderStroke.Thickness = 0.9
             SliderStroke.Transparency = 0.3
-            SliderStroke.Color = Color3.fromRGB(0, 0, 0)
+            SliderStroke.Color = Color3.fromRGB(0,0,0)
             SliderStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
 
             SliderTitle.Name = "SliderTitle"
             SliderTitle.Parent = Slider
@@ -730,20 +653,6 @@ function QuickHacksUI:Window(text, preset, closebind)
             SlideCircle.Image = "rbxassetid://3570695787"
             SlideCircle.ImageColor3 = PresetColor
 
-            Tooltip.Name = "Tooltip"
-            Tooltip.Parent = Slider
-            Tooltip.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-            Tooltip.BackgroundTransparency = 1
-            Tooltip.Position = UDim2.new(0, 0, 1, 5)
-            Tooltip.Size = UDim2.new(0, 200, 0, 20)
-            Tooltip.Font = Enum.Font.Gotham
-            Tooltip.Text = "Adjust " .. text:lower()
-            Tooltip.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Tooltip.TextSize = 12
-            Tooltip.TextXAlignment = Enum.TextXAlignment.Left
-            Tooltip.ZIndex = 10
-            Tooltip.Visible = false
-
             coroutine.wrap(function()
                 while wait() do
                     CurrentValueFrame.BackgroundColor3 = PresetColor
@@ -754,8 +663,8 @@ function QuickHacksUI:Window(text, preset, closebind)
             local function move(input)
                 local posX = math.clamp((input.Position.X - SlideFrame.AbsolutePosition.X) / SlideFrame.AbsoluteSize.X, 0, 1)
                 local value = math.floor((posX * (max - min)) + min)
-                SlideCircle:TweenPosition(UDim2.new(posX, -6, -1.304, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.1, true)
-                CurrentValueFrame:TweenSize(UDim2.new(posX, 0, 0, 3), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.1, true)
+                SlideCircle.Position = UDim2.new(posX, -6, -1.304, 0)
+                CurrentValueFrame.Size = UDim2.new(posX, 0, 0, 3)
                 SliderValue.Text = tostring(value)
                 pcall(callback, value)
             end
@@ -779,14 +688,148 @@ function QuickHacksUI:Window(text, preset, closebind)
                 end
             end)
 
-            Slider.MouseEnter:Connect(function()
-                Tooltip.Visible = true
+            Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
+        end
+
+        function tabcontent:Dropdown(text, list, callback)
+            local droptog = false
+            local framesize = 0
+            local itemcount = 0
+
+            local Dropdown = Instance.new("Frame")
+            local DropdownCorner = Instance.new("UICorner")
+            local DropdownStroke = Instance.new("UIStroke")
+            local DropdownBtn = Instance.new("TextButton")
+            local DropdownTitle = Instance.new("TextLabel")
+            local ArrowImg = Instance.new("ImageLabel")
+            local DropItemHolder = Instance.new("ScrollingFrame")
+            local DropLayout = Instance.new("UIListLayout")
+
+            Dropdown.Name = "Dropdown"
+            Dropdown.Parent = Tab
+            Dropdown.BackgroundColor3 = CurrentUIBackgroundColor
+            Dropdown.BackgroundTransparency = 0.2
+            Dropdown.ClipsDescendants = true
+            Dropdown.Size = UDim2.new(0, 363, 0, 42)
+
+            DropdownCorner.CornerRadius = UDim.new(0, 5)
+            DropdownCorner.Parent = Dropdown
+
+            DropdownStroke.Parent = Dropdown
+            DropdownStroke.Thickness = 0.9
+            DropdownStroke.Transparency = 0.2
+            DropdownStroke.Color = Color3.fromRGB(0,0,0)
+            DropdownStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+  
+
+
+            DropdownBtn.Name = "DropdownBtn"
+            DropdownBtn.Parent = Dropdown
+            DropdownBtn.BackgroundTransparency = 1
+            DropdownBtn.Size = UDim2.new(0, 363, 0, 42)
+            DropdownBtn.Font = Enum.Font.SourceSans
+            DropdownBtn.Text = ""
+
+            DropdownTitle.Name = "DropdownTitle"
+            DropdownTitle.Parent = Dropdown
+            DropdownTitle.BackgroundTransparency = 1
+            DropdownTitle.Position = UDim2.new(0.036, 0, 0, 0)
+            DropdownTitle.Size = UDim2.new(0, 187, 0, 42)
+            DropdownTitle.Font = Enum.Font.Gotham
+            DropdownTitle.Text = text or "Unnamed Dropdown"
+            DropdownTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+            DropdownTitle.TextSize = 14
+            DropdownTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+            ArrowImg.Name = "ArrowImg"
+            ArrowImg.Parent = DropdownTitle
+            ArrowImg.BackgroundTransparency = 1
+            ArrowImg.Position = UDim2.new(1.652, 0, 0.19, 0)
+            ArrowImg.Size = UDim2.new(0, 26, 0, 26)
+            ArrowImg.Image = "http://www.roblox.com/asset/?id=6034818375"
+
+            DropItemHolder.Name = "DropItemHolder"
+            DropItemHolder.Parent = DropdownTitle
+            DropItemHolder.Active = true
+            DropItemHolder.BackgroundTransparency = 1
+            DropItemHolder.BorderSizePixel = 0
+            DropItemHolder.Position = UDim2.new(-0.004, 0, 1.05, 0)
+            DropItemHolder.Size = UDim2.new(0, 342, 0, 0)
+            DropItemHolder.CanvasSize = UDim2.new(0, 0, 0, 0)
+            DropItemHolder.ScrollBarThickness = 3
+
+            DropLayout.Name = "DropLayout"
+            DropLayout.Parent = DropItemHolder
+            DropLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+            DropdownBtn.MouseButton1Click:Connect(function()
+                if droptog == false then
+                    Dropdown:TweenSize(UDim2.new(0, 363, 0, 55 + framesize), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
+                    TweenService:Create(ArrowImg, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Rotation = 270}):Play()
+                    wait(0.2)
+                    Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
+                else
+                    Dropdown:TweenSize(UDim2.new(0, 363, 0, 42), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
+                    TweenService:Create(ArrowImg, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Rotation = 0}):Play()
+                    wait(0.2)
+                    Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
+                end
+                droptog = not droptog
             end)
 
-            Slider.MouseLeave:Connect(function()
-                Tooltip.Visible = false
-            end)
+            for _, v in next, list do
+                itemcount = itemcount + 1
+                if itemcount <= 5 then
+                    framesize = framesize + 26
+                    DropItemHolder.Size = UDim2.new(0, 342, 0, framesize)
+                end
+                local Item = Instance.new("TextButton")
+                local ItemCorner = Instance.new("UICorner")
+                local ItemStroke = Instance.new("UIStroke")
+               
 
+                Item.Name = "Item"
+                Item.Parent = DropItemHolder
+                Item.BackgroundColor3 = CurrentUIBackgroundColor
+                Item.ClipsDescendants = true
+                Item.Size = UDim2.new(0, 335, 0, 25)
+                Item.AutoButtonColor = false
+                Item.Font = Enum.Font.Gotham
+                Item.Text = v
+                Item.TextColor3 = Color3.fromRGB(255, 255, 255)
+                Item.TextSize = 15
+
+                ItemCorner.CornerRadius = UDim.new(0, 4)
+                ItemCorner.Parent = Item
+
+
+                ItemStroke.Parent = Item
+                ItemStroke.Thickness = 0.9
+                ItemStroke.Transparency = 0.3
+                ItemStroke.Color = Color3.fromRGB(0,0,0)
+                ItemStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+
+                Item.MouseEnter:Connect(function()
+                    TweenService:Create(Item, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(37, 37, 37)}):Play()
+                end)
+
+                Item.MouseLeave:Connect(function()
+                    TweenService:Create(Item, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = CurrentUIBackgroundColor}):Play()
+                end)
+
+                Item.MouseButton1Click:Connect(function()
+                    droptog = false
+                    DropdownTitle.Text = text .. " - " .. v
+                    pcall(callback, v)
+                    Dropdown:TweenSize(UDim2.new(0, 363, 0, 42), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
+                    TweenService:Create(ArrowImg, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Rotation = 0}):Play()
+                    wait(0.2)
+                    Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
+                end)
+
+                DropItemHolder.CanvasSize = UDim2.new(0, 0, 0, DropLayout.AbsoluteContentSize.Y)
+            end
             Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
         end
 
@@ -825,7 +868,6 @@ function QuickHacksUI:Window(text, preset, closebind)
             local HueCorner = Instance.new("UICorner")
             local HueGradient = Instance.new("UIGradient")
             local HueSelection = Instance.new("ImageLabel")
-            local Tooltip = Instance.new("TextLabel") -- 2. Tooltips
 
             Colorpicker.Name = "Colorpicker"
             Colorpicker.Parent = Tab
@@ -839,8 +881,10 @@ function QuickHacksUI:Window(text, preset, closebind)
             ColorpickerStroke.Parent = Colorpicker
             ColorpickerStroke.Thickness = 0.9
             ColorpickerStroke.Transparency = 0.3
-            ColorpickerStroke.Color = Color3.fromRGB(0, 0, 0)
+            ColorpickerStroke.Color = Color3.fromRGB(0,0,0)
             ColorpickerStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+
 
             ColorpickerTitle.Name = "ColorpickerTitle"
             ColorpickerTitle.Parent = Colorpicker
@@ -861,6 +905,7 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             BoxColorCorner.CornerRadius = UDim.new(0, 5)
             BoxColorCorner.Parent = BoxColor
+
 
             ColorpickerBtn.Name = "ColorpickerBtn"
             ColorpickerBtn.Parent = ColorpickerTitle
@@ -973,20 +1018,6 @@ function QuickHacksUI:Window(text, preset, closebind)
             HueSelection.Size = UDim2.new(0, 18, 0, 18)
             HueSelection.Image = "http://www.roblox.com/asset/?id=4805639000"
             HueSelection.Visible = false
-
-            Tooltip.Name = "Tooltip"
-            Tooltip.Parent = Colorpicker
-            Tooltip.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-            Tooltip.BackgroundTransparency = 1
-            Tooltip.Position = UDim2.new(0, 0, 1, 5)
-            Tooltip.Size = UDim2.new(0, 200, 0, 20)
-            Tooltip.Font = Enum.Font.Gotham
-            Tooltip.Text = "Pick a color for " .. text:lower()
-            Tooltip.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Tooltip.TextSize = 12
-            Tooltip.TextXAlignment = Enum.TextXAlignment.Left
-            Tooltip.ZIndex = 10
-            Tooltip.Visible = false
 
             coroutine.wrap(function()
                 while wait() do FrameRainbowToggle3.BackgroundColor3 = PresetColor end
@@ -1112,12 +1143,214 @@ function QuickHacksUI:Window(text, preset, closebind)
                 end
             end)
 
-            Colorpicker.MouseEnter:Connect(function()
-                Tooltip.Visible = true
+            Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
+        end
+
+        function tabcontent:Label(text)
+            local Label = Instance.new("TextButton")
+            local LabelCorner = Instance.new("UICorner")
+            local LabelTitle = Instance.new("TextLabel")
+            local LabelStroke = Instance.new("UIStroke")
+
+
+            Label.Name = "Label"
+            Label.Parent = Tab
+            Label.BackgroundColor3 = CurrentUIBackgroundColor
+            Label.Size = UDim2.new(0, 363, 0, 42)
+            Label.AutoButtonColor = false
+            Label.Font = Enum.Font.SourceSans
+            Label.Text = ""
+
+            LabelCorner.CornerRadius = UDim.new(0, 5)
+            LabelCorner.Parent = Label
+
+            LabelStroke.Parent = Label
+            LabelStroke.Thickness = 0.9
+            LabelStroke.Transparency = 0.3
+            LabelStroke.Color = Color3.fromRGB(0,0,0)
+            LabelStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+
+
+            LabelTitle.Name = "LabelTitle"
+            LabelTitle.Parent = Label
+            LabelTitle.BackgroundTransparency = 1
+            LabelTitle.Position = UDim2.new(0.036, 0, 0, 0)
+            LabelTitle.Size = UDim2.new(0, 187, 0, 42)
+            LabelTitle.Font = Enum.Font.Gotham
+            LabelTitle.Text = text or "Unnamed Label"
+            LabelTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+            LabelTitle.TextSize = 14
+            LabelTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+            Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
+        end
+
+        function tabcontent:Textbox(text, disapper, callback)
+            local Textbox = Instance.new("Frame")
+            local TextboxCorner = Instance.new("UICorner")
+local TextboxStroke = Instance.new("UIStroke")
+            local TextboxTitle = Instance.new("TextLabel")
+            local TextboxFrame = Instance.new("Frame")
+            local TextboxFrameCorner = Instance.new("UICorner")
+            local TextBox = Instance.new("TextBox")
+
+            Textbox.Name = "Textbox"
+            Textbox.Parent = Tab
+            Textbox.BackgroundColor3 = CurrentUIBackgroundColor
+            Textbox.ClipsDescendants = true
+            Textbox.Size = UDim2.new(0, 363, 0, 42)
+
+            TextboxCorner.CornerRadius = UDim.new(0, 5)
+            TextboxCorner.Parent = Textbox
+
+TextboxStroke.Parent = Textbox
+            TextboxStroke.Thickness = 0.9
+            TextboxStroke.Transparency = 0.3
+            TextboxStroke.Color = Color3.fromRGB(0,0,0)
+            TextboxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+
+            TextboxTitle.Name = "TextboxTitle"
+            TextboxTitle.Parent = Textbox
+            TextboxTitle.BackgroundTransparency = 1
+            TextboxTitle.Position = UDim2.new(0.036, 0, 0, 0)
+            TextboxTitle.Size = UDim2.new(0, 187, 0, 42)
+            TextboxTitle.Font = Enum.Font.Gotham
+            TextboxTitle.Text = text or "Unnamed Textbox"
+            TextboxTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+            TextboxTitle.TextSize = 14
+            TextboxTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+            TextboxFrame.Name = "TextboxFrame"
+            TextboxFrame.Parent = TextboxTitle
+            TextboxFrame.BackgroundColor3 = Color3.fromRGB(37, 37, 37)
+            TextboxFrame.Position = UDim2.new(1.289, 0, 0.214, 0)
+            TextboxFrame.Size = UDim2.new(0, 100, 0, 23)
+
+            TextboxFrameCorner.CornerRadius = UDim.new(0, 5)
+            TextboxFrameCorner.Parent = TextboxFrame
+
+            TextBox.Parent = TextboxFrame
+            TextBox.BackgroundTransparency = 1
+            TextBox.Size = UDim2.new(0, 100, 0, 23)
+            TextBox.Font = Enum.Font.Gotham
+            TextBox.Text = ""
+            TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+            TextBox.TextSize = 14
+
+            TextBox.FocusLost:Connect(function(ep)
+                if ep and #TextBox.Text > 0 then
+                    pcall(callback, TextBox.Text)
+                    if disapper then TextBox.Text = "" end
+                end
             end)
 
-            Colorpicker.MouseLeave:Connect(function()
-                Tooltip.Visible = false
+            Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
+        end
+
+        function tabcontent:Bind(text, keypreset, callback)
+            local Key = keypreset.Name
+            local Binding = false
+
+            local Bind = Instance.new("TextButton")
+            local BindCorner = Instance.new("UICorner")
+            local BindStroke = Instance.new("UIStroke")
+            local BindTitle = Instance.new("TextLabel")
+            local BindText = Instance.new("TextLabel")
+
+            Bind.Name = "Bind"
+            Bind.Parent = Tab
+            Bind.BackgroundColor3 = CurrentUIBackgroundColor
+            Bind.Size = UDim2.new(0, 363, 0, 42)
+            Bind.AutoButtonColor = false
+            Bind.Font = Enum.Font.SourceSans
+            Bind.Text = ""
+
+            BindCorner.CornerRadius = UDim.new(0, 5)
+            BindCorner.Parent = Bind
+
+            BindStroke.Parent = Bind
+            BindStroke.Thickness = 0.9
+            BindStroke.Transparency = 0.3
+            BindStroke.Color = Color3.fromRGB(0,0,0)
+            BindStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+            BindTitle.Name = "BindTitle"
+            BindTitle.Parent = Bind
+            BindTitle.BackgroundTransparency = 1
+            BindTitle.Position = UDim2.new(0.036, 0, 0, 0)
+            BindTitle.Size = UDim2.new(0, 187, 0, 42)
+            BindTitle.Font = Enum.Font.Gotham
+            BindTitle.Text = text or "Unnamed Bind"
+            BindTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+            BindTitle.TextSize = 14
+            BindTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+            BindText.Name = "BindText"
+            BindText.Parent = Bind
+            BindText.BackgroundTransparency = 1
+            BindText.Position = UDim2.new(0.036, 0, 0, 0)
+            BindText.Size = UDim2.new(0, 337, 0, 42)
+            BindText.Font = Enum.Font.Gotham
+            BindText.Text = Key
+            BindText.TextColor3 = Color3.fromRGB(255, 255, 255)
+            BindText.TextSize = 14
+            BindText.TextXAlignment = Enum.TextXAlignment.Right
+
+            Bind.MouseButton1Click:Connect(function()
+                if not Binding then
+                    Binding = true
+                    BindText.Text = ""
+
+                    local dots = 0
+                    local animationTask
+                    animationTask = task.spawn(function()
+                        while Binding do
+                            if dots == 0 then
+                                BindText.Text = "."
+                            elseif dots == 1 then
+                                BindText.Text = ".."
+                            elseif dots == 2 then
+                                BindText.Text = "..."
+                            end
+                            dots = (dots + 1) % 3
+                            task.wait(0.3)
+                        end
+                    end)
+
+                    local inputEvent
+                    inputEvent = UserInputService.InputBegan:Connect(function(input)
+                        local newKey
+                        if input.UserInputType == Enum.UserInputType.Keyboard then
+                            newKey = input.KeyCode.Name
+                        elseif input.UserInputType == Enum.UserInputType.MouseButton1 then
+                            newKey = "MouseLeft"
+                        elseif input.UserInputType == Enum.UserInputType.MouseButton2 then
+                            newKey = "MouseRight"
+                        end
+
+                        if newKey and newKey ~= "Unknown" then
+                            Binding = false
+                            BindText.Text = newKey
+                            Key = newKey
+                            inputEvent:Disconnect()
+                            if animationTask then
+                                task.cancel(animationTask)
+                            end
+                        end
+                    end)
+                end
+            end)
+
+            UserInputService.InputBegan:Connect(function(input)
+                if not Binding and input.KeyCode.Name == Key then
+                    pcall(callback, input.KeyCode.Name)
+                elseif not Binding and Key == "MouseLeft" and input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    pcall(callback, "MouseLeft")
+                elseif not Binding and Key == "MouseRight" and input.UserInputType == Enum.UserInputType.MouseButton2 then
+                    pcall(callback, "MouseRight")
+                end
             end)
 
             Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
@@ -1129,86 +1362,6 @@ function QuickHacksUI:Window(text, preset, closebind)
     local settingsTab
     local function createSettingsTab()
         settingsTab = tabhold:Tab("Settings")
-
-        -- Frame Color (Colorpicker)
-        settingsTab:Colorpicker("Frame Color", CurrentUIBackgroundColor, function(color)
-            CurrentUIBackgroundColor = color
-            Main.BackgroundColor3 = color
-            for _, tab in next, TabFolder:GetChildren() do
-                if tab:IsA("ScrollingFrame") then
-                    for _, item in next, tab:GetDescendants() do
-                        if item:IsA("Frame") and item.Name ~= "SlideFrame" and item.Name ~= "CurrentValueFrame" then
-                            item.BackgroundColor3 = color
-                        end
-                    end
-                end
-            end
-        end)
-
-        -- Frame Size (Slider)
-        settingsTab:Slider("Frame Width", 300, 800, 560, function(value)
-            Main:TweenSize(UDim2.new(0, value, 0, Main.Size.Y.Offset), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true)
-        end)
-
-        settingsTab:Slider("Frame Height", 200, 600, 319, function(value)
-            Main:TweenSize(UDim2.new(0, Main.Size.X.Offset, 0, value), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true)
-        end)
-
-        -- Page Color (Colorpicker)
-        settingsTab:Colorpicker("Page Color", Color3.fromRGB(255, 255, 255), function(color)
-            for _, tab in next, TabFolder:GetChildren() do
-                if tab:IsA("ScrollingFrame") then
-                    tab.BackgroundColor3 = color
-                    tab.BackgroundTransparency = 0.9
-                end
-            end
-        end)
-
-        -- Button Color (Colorpicker)
-        settingsTab:Colorpicker("Button Color", CurrentUIBackgroundColor, function(color)
-            for _, tab in next, TabFolder:GetChildren() do
-                if tab:IsA("ScrollingFrame") then
-                    for _, item in next, tab:GetDescendants() do
-                        if item:IsA("TextButton") and item.Name == "Button" then
-                            item.BackgroundColor3 = color
-                        end
-                    end
-                end
-            end
-        end)
-
-        -- Theme Toggle (Light/Dark Mode)
-        settingsTab:Toggle("Dark Mode", true, function(state)
-            if state then
-                CurrentUIBackgroundColor = Color3.fromRGB(30, 30, 30)
-                Main.BackgroundColor3 = CurrentUIBackgroundColor
-                Header.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-                for _, tab in next, TabFolder:GetChildren() do
-                    if tab:IsA("ScrollingFrame") then
-                        for _, item in next, tab:GetDescendants() do
-                            if item:IsA("Frame") and item.Name ~= "SlideFrame" and item.Name ~= "CurrentValueFrame" then
-                                item.BackgroundColor3 = CurrentUIBackgroundColor
-                            end
-                        end
-                    end
-                end
-            else
-                CurrentUIBackgroundColor = Color3.fromRGB(200, 200, 200)
-                Main.BackgroundColor3 = CurrentUIBackgroundColor
-                Header.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
-                for _, tab in next, TabFolder:GetChildren() do
-                    if tab:IsA("ScrollingFrame") then
-                        for _, item in next, tab:GetDescendants() do
-                            if item:IsA("Frame") and item.Name ~= "SlideFrame" and item.Name ~= "CurrentValueFrame" then
-                                item.BackgroundColor3 = CurrentUIBackgroundColor
-                            end
-                        end
-                    end
-                end
-            end
-        end)
-
-        -- Transparency Toggle
         settingsTab:Toggle("Transparency", false, function(state)
             if state then
                 Main.BackgroundTransparency = 0.5
@@ -1228,6 +1381,35 @@ function QuickHacksUI:Window(text, preset, closebind)
                 end
             end
         end)
+
+        settingsTab:Bind("Toggle UI Visibility", Enum.KeyCode.RightControl, function()
+            if Main.Size.X.Offset > 0 then
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = Main.BackgroundTransparency}):Play()
+            else
+                Main.Visible = true
+                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319), BackgroundTransparency = Main.BackgroundTransparency}):Play()
+            end
+        end)
+
+        settingsTab:Colorpicker("Change Textures Color", Color3.fromRGB(44, 120, 224), function(t)
+            QuickHacksUI:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+        end)
+
+        for _, v in next, TabFolder:GetChildren() do
+            v.Visible = (v == settingsTab.Tab)
+        end
+        for _, v in next, TabHold:GetChildren() do
+            if v.Name == "TabBtn" then
+                v.TabBtnIndicator:TweenSize(UDim2.new(0, v == settingsTab.TabBtn and 13 or 0, 0, 2), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
+                TweenService:Create(v.TabTitle, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = v == settingsTab.TabBtn and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(150, 150, 150)}):Play()
+            end
+        end
+    end
+
+    local originalTab = tabhold.Tab
+    tabhold.Tab = function(self, text)
+        local tab = originalTab(self, text)
+        return tab
     end
 
     task.spawn(function()
@@ -1237,10 +1419,4 @@ function QuickHacksUI:Window(text, preset, closebind)
 
     return tabhold
 end
-
--- Beispielaufruf
-local win = QuickHacksUI:Window("QuickHacks", Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
-local tab = win:Tab("Main")
-tab:Button("Test Button", function()
-    print("Button clicked!")
-end)
+return QuickHacksUI
