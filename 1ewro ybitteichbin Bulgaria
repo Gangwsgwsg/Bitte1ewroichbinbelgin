@@ -1,12 +1,12 @@
 local QuickHacksUI = {RainbowColorValue = 0, HueSelectionPosition = 0}
 local UserInputService = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local PresetColor = Color3.fromRGB(44, 120, 224)
 local CloseBind = Enum.KeyCode.RightControl
 local CurrentUIBackgroundColor = Color3.fromRGB(30, 30, 30)
+local activeNotifications = {}
 
 if game.CoreGui:FindFirstChild("QuickHacksUI") then
     game.CoreGui.QuickHacksUI:Destroy()
@@ -31,7 +31,7 @@ local function MakeDraggable(topbarobject, object)
     local function Update(input)
         local Delta = input.Position - DragStart
         local pos = UDim2.new(StartPosition.X.Scale, StartPosition.X.Offset + Delta.X, StartPosition.Y.Scale, StartPosition.Y.Offset + Delta.Y)
-        TweenService:Create(object, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = pos}):Play()
+        object.Position = pos
     end
     topbarobject.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -221,10 +221,10 @@ function QuickHacksUI:Window(text, preset, closebind)
         MakeDraggable(MobileBtn, MobileBtn)
         MobileBtn.MouseButton1Click:Connect(function()
             if Main.Size.X.Offset > 0 then
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0)}):Play()
+                Main.Size = UDim2.new(0, 0, 0, 0)
             else
                 Main.Visible = true
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319)}):Play()
+                Main.Size = UDim2.new(0, 560, 0, 319)
             end
         end)
 
@@ -252,22 +252,22 @@ function QuickHacksUI:Window(text, preset, closebind)
         end)
     end
 
-    Main:TweenSize(UDim2.new(0, 560, 0, 319), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.6, true)
+    Main.Size = UDim2.new(0, 560, 0, 319)
     MakeDraggable(DragFrame, Main)
 
     CloseBtn.MouseButton1Click:Connect(function()
-        QuickHacksUI:Notification("Close UI", "Are you sure?", "Yes", "No")
+        QuickHacksUI:Notifybutton("Close UI", "Are you sure?", "Yes", "No")
     end)
 
     local uitoggled = false
     UserInputService.InputBegan:Connect(function(ioudd)
         if io.KeyCode == CloseBind then
             if uitoggled == false then
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 0)}):Play()
+                Main.Size = UDim2.new(0, 0, 0, 0)
                 uitoggled = true
             else
                 Main.Visible = true
-                TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 560, 0, 319)}):Play()
+                Main.Size = UDim2.new(0, 560, 0, 319)
                 uitoggled = false
             end
         end
@@ -280,22 +280,16 @@ function QuickHacksUI:Window(text, preset, closebind)
         PresetColor = toch
     end
 
-    function QuickHacksUI:Notification(texttitle, textdesc, textbtn1, textbtn2)
+    function QuickHacksUI:Notify(title, message)
         local notifyUI = Instance.new("Frame")
-        local NotificationFrame = Instance.new("Frame")
-        local YesBtn = Instance.new("TextButton")
-        local YesBtnCorner = Instance.new("UICorner")
-        local YesBtnTitle = Instance.new("TextLabel")
-        local NoBtn = Instance.new("TextButton")
-        local NoBtnCorner = Instance.new("UICorner")
-        local NoBtnTitle = Instance.new("TextLabel")
         local NotificationTitle = Instance.new("TextLabel")
         local NotificationDesc = Instance.new("TextLabel")
         local NotificationCorner = Instance.new("UICorner")
 
         notifyUI.Name = "notifyUI"
         notifyUI.Parent = NotifyHolder
-        notifyUI.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+        notifyUI.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        notifyUI.BackgroundTransparency = 0.5
         notifyUI.Size = UDim2.new(0, 200, 0, 0)
         notifyUI.Position = UDim2.new(0, 0, 1, 0)
 
@@ -308,7 +302,7 @@ function QuickHacksUI:Window(text, preset, closebind)
         NotificationTitle.Position = UDim2.new(0.05, 0, 0.05, 0)
         NotificationTitle.Size = UDim2.new(0, 180, 0, 20)
         NotificationTitle.Font = Enum.Font.GothamBold
-        NotificationTitle.Text = texttitle
+        NotificationTitle.Text = title
         NotificationTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
         NotificationTitle.TextSize = 14
         NotificationTitle.TextXAlignment = Enum.TextXAlignment.Left
@@ -319,25 +313,108 @@ function QuickHacksUI:Window(text, preset, closebind)
         NotificationDesc.Position = UDim2.new(0.05, 0, 0.25, 0)
         NotificationDesc.Size = UDim2.new(0, 180, 0, 40)
         NotificationDesc.Font = Enum.Font.Gotham
-        NotificationDesc.Text = textdesc
+        NotificationDesc.Text = message
         NotificationDesc.TextColor3 = Color3.fromRGB(180, 180, 180)
         NotificationDesc.TextSize = 12
         NotificationDesc.TextWrapped = true
         NotificationDesc.TextXAlignment = Enum.TextXAlignment.Left
 
-        YesBtn.Name = "YesBtn"
-        YesBtn.Parent = notifyUI
+        notifyUI.Size = UDim2.new(0, 200, 0, 120)
+        notifyUI.Position = UDim2.new(0, 0, 0, 0)
+
+        wait(3)
+
+        notifyUI.Size = UDim2.new(0, 0, 0, 120)
+        wait(0.3)
+        notifyUI:Destroy()
+
+        if #NotifyHolder:GetChildren() > 5 then
+            NotifyHolder:GetChildren()[1]:Destroy()
+        end
+
+        for i, notification in pairs(NotifyHolder:GetChildren()) do
+            if notification:IsA("Frame") then
+                notification.Position = UDim2.new(0, 0, 0, -notification.Size.Y.Offset - NotifyLayout.Padding.Offset)
+            end
+        end
+    end
+
+    function QuickHacksUI:Notifybutton(title, message, textbtn1, textbtn2)
+        local NotifGui = Instance.new("ScreenGui")
+        NotifGui.Name = "CustomNotif"
+        NotifGui.Parent = game.CoreGui
+
+        local NotifFrame = Instance.new("Frame")
+        NotifFrame.Size = UDim2.new(0, 250, 0, 60)
+        NotifFrame.Position = UDim2.new(1, 260, 1, -70)
+        NotifFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        NotifFrame.BackgroundTransparency = 0.4
+        NotifFrame.BorderSizePixel = 0
+        NotifFrame.Parent = NotifGui
+
+        local Gradient = Instance.new("UIGradient")
+        Gradient.Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(85, 0, 127)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 200, 0))
+        }
+        Gradient.Rotation = 45
+        Gradient.Parent = NotifFrame
+
+        local Stroke = Instance.new("UIStroke")
+        Stroke.Color = Color3.fromRGB(150, 50, 255)
+        Stroke.Thickness = 1.5
+        Stroke.Transparency = 0.2
+        Stroke.Parent = NotifFrame
+
+        local Corner = Instance.new("UICorner")
+        Corner.CornerRadius = UDim.new(0, 10)
+        Corner.Parent = NotifFrame
+
+        local Icon = Instance.new("ImageLabel")
+        Icon.Size = UDim2.new(0, 30, 0, 30)
+        Icon.Position = UDim2.new(0, 10, 0.5, -15)
+        Icon.BackgroundTransparency = 1
+        Icon.Image = "rbxassetid://138861967300749"
+        Icon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+        Icon.Parent = NotifFrame
+
+        local TitleLabel = Instance.new("TextLabel")
+        TitleLabel.Size = UDim2.new(0, 190, 0, 18)
+        TitleLabel.Position = UDim2.new(0, 50, 0, 8)
+        TitleLabel.BackgroundTransparency = 1
+        TitleLabel.Text = title
+        TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TitleLabel.TextSize = 16
+        TitleLabel.Font = Enum.Font.GothamBold
+        TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+        TitleLabel.Parent = NotifFrame
+
+        local MessageLabel = Instance.new("TextLabel")
+        MessageLabel.Size = UDim2.new(0, 190, 0, 30)
+        MessageLabel.Position = UDim2.new(0, 50, 0, 26)
+        MessageLabel.BackgroundTransparency = 1
+        MessageLabel.Text = message
+        MessageLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+        MessageLabel.TextSize = 12
+        MessageLabel.Font = Enum.Font.Gotham
+        MessageLabel.TextXAlignment = Enum.TextXAlignment.Left
+        MessageLabel.TextWrapped = true
+        MessageLabel.Parent = NotifFrame
+
+        local YesBtn = Instance.new("TextButton")
+        YesBtn.Parent = NotifFrame
         YesBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-        YesBtn.Position = UDim2.new(0.05, 0, 0.75, 0)
+        YesBtn.Position = UDim2.new(0, 50, 0, 70)
         YesBtn.Size = UDim2.new(0, 85, 0, 25)
         YesBtn.AutoButtonColor = false
         YesBtn.Font = Enum.Font.SourceSans
         YesBtn.Text = ""
 
+        local YesBtnCorner = Instance.new("UICorner")
         YesBtnCorner.CornerRadius = UDim.new(0, 5)
         YesBtnCorner.Parent = YesBtn
 
-        YesBtnTitle.Name = "YesBtnTitle"
+        local YesBtnTitle = Instance.new("TextLabel")
         YesBtnTitle.Parent = YesBtn
         YesBtnTitle.BackgroundTransparency = 1
         YesBtnTitle.Size = UDim2.new(1, 0, 1, 0)
@@ -346,19 +423,20 @@ function QuickHacksUI:Window(text, preset, closebind)
         YesBtnTitle.TextColor3 = Color3.fromRGB(200, 200, 200)
         YesBtnTitle.TextSize = 12
 
-        NoBtn.Name = "NoBtn"
-        NoBtn.Parent = notifyUI
+        local NoBtn = Instance.new("TextButton")
+        NoBtn.Parent = NotifFrame
         NoBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-        NoBtn.Position = UDim2.new(0.525, 0, 0.75, 0)
+        NoBtn.Position = UDim2.new(0, 145, 0, 70)
         NoBtn.Size = UDim2.new(0, 85, 0, 25)
         NoBtn.AutoButtonColor = false
         NoBtn.Font = Enum.Font.SourceSans
         NoBtn.Text = ""
 
+        local NoBtnCorner = Instance.new("UICorner")
         NoBtnCorner.CornerRadius = UDim.new(0, 5)
         NoBtnCorner.Parent = NoBtn
 
-        NoBtnTitle.Name = "NoBtnTitle"
+        local NoBtnTitle = Instance.new("TextLabel")
         NoBtnTitle.Parent = NoBtn
         NoBtnTitle.BackgroundTransparency = 1
         NoBtnTitle.Size = UDim2.new(1, 0, 1, 0)
@@ -367,31 +445,52 @@ function QuickHacksUI:Window(text, preset, closebind)
         NoBtnTitle.TextColor3 = Color3.fromRGB(200, 200, 200)
         NoBtnTitle.TextSize = 12
 
-        notifyUI:TweenSize(UDim2.new(0, 200, 0, 120), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.3, true)
-        TweenService:Create(notifyUI, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0, 0, 0, 0)}):Play()
+        NotifFrame.Size = UDim2.new(0, 250, 0, 100)
+
+        for i, notif in ipairs(activeNotifications) do
+            local newY = -70 - (i * 65)
+            notif.Frame.Position = UDim2.new(1, -260, 1, newY)
+            notif.PositionY = newY
+        end
+
+        table.insert(activeNotifications, {Frame = NotifFrame, Gui = NotifGui, PositionY = -70})
+
+        NotifFrame.Position = UDim2.new(1, -260, 1, -70)
 
         YesBtn.MouseButton1Click:Connect(function()
-            TweenService:Create(notifyUI, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 120)}):Play()
-            wait(0.3)
-            notifyUI:Destroy()
+            NotifFrame.Position = UDim2.new(1, 260, 1, -70)
+            wait(0.5)
+            for i, notif in ipairs(activeNotifications) do
+                if notif.Frame == NotifFrame then
+                    table.remove(activeNotifications, i)
+                    break
+                end
+            end
+            for i, notif in ipairs(activeNotifications) do
+                local newY = -70 - ((i - 1) * 65)
+                notif.Frame.Position = UDim2.new(1, -260, 1, newY)
+                notif.PositionY = newY
+            end
+            NotifGui:Destroy()
             ui:Destroy()
         end)
 
         NoBtn.MouseButton1Click:Connect(function()
-            TweenService:Create(notifyUI, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 0, 0, 120)}):Play()
-            wait(0.3)
-            notifyUI:Destroy()
-        end)
-
-        if #NotifyHolder:GetChildren() > 5 then
-            NotifyHolder:GetChildren()[1]:Destroy()
-        end
-
-        for _, notification in pairs(NotifyHolder:GetChildren()) do
-            if notification:IsA("Frame") then
-                TweenService:Create(notification, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0, 0, 0, -notification.Size.Y.Offset - NotifyLayout.Padding.Offset)}):Play()
+            NotifFrame.Position = UDim2.new(1, 260, 1, -70)
+            wait(0.5)
+            for i, notif in ipairs(activeNotifications) do
+                if notif.Frame == NotifFrame then
+                    table.remove(activeNotifications, i)
+                    break
+                end
             end
-        end
+            for i, notif in ipairs(activeNotifications) do
+                local newY = -70 - ((i - 1) * 65)
+                notif.Frame.Position = UDim2.new(1, -260, 1, newY)
+                notif.PositionY = newY
+            end
+            NotifGui:Destroy()
+        end)
     end
 
     local tabhold = {}
@@ -470,10 +569,10 @@ function QuickHacksUI:Window(text, preset, closebind)
             end
             for _, v in next, TabHold:GetChildren() do
                 if v.Name == "TabBtn" then
-                    v.TabBtnIndicator:TweenSize(UDim2.new(0, 0, 0, 2), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
-                    TabBtnIndicator:TweenSize(UDim2.new(0, 13, 0, 2), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
-                    TweenService:Create(v.TabTitle, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)}):Play()
-                    TweenService:Create(TabTitle, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+                    v.TabBtnIndicator.Size = UDim2.new(0, 0, 0, 2)
+                    TabBtnIndicator.Size = UDim2.new(0, 13, 0, 2)
+                    v.TabTitle.TextColor3 = Color3.fromRGB(150, 150, 150)
+                    TabTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
                 end
             end
         end)
@@ -514,9 +613,6 @@ function QuickHacksUI:Window(text, preset, closebind)
             ButtonTitle.TextXAlignment = Enum.TextXAlignment.Left
 
             Button.MouseButton1Click:Connect(function()
-                TweenService:Create(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.02, 0, 0, 0)}):Play()
-                wait(0.1)
-                TweenService:Create(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0, 0, 0, 0)}):Play()
                 pcall(callback)
             end)
 
@@ -558,7 +654,7 @@ function QuickHacksUI:Window(text, preset, closebind)
             SliderTitle.Size = UDim2.new(0, 187, 0, 42)
             SliderTitle.Font = Enum.Font.Gotham
             SliderTitle.Text = text or "Unnamed Slider"
-            SliderTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+            SliderTitle.TextColor3 = Color3.fromRGB(255, 255, 244)
             SliderTitle.TextSize = 14
             SliderTitle.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -703,11 +799,11 @@ function QuickHacksUI:Window(text, preset, closebind)
 
             DropdownBtn.MouseButton1Click:Connect(function()
                 if droptog == false then
-                    Dropdown:TweenSize(UDim2.new(0, 363, 0, 55 + framesize), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
-                    TweenService:Create(ArrowImg, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Rotation = 270}):Play()
+                    Dropdown.Size = UDim2.new(0, 363, 0, 55 + framesize)
+                    ArrowImg.Rotation = 270
                 else
-                    Dropdown:TweenSize(UDim2.new(0, 363, 0, 42), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
-                    TweenService:Create(ArrowImg, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Rotation = 0}):Play()
+                    Dropdown.Size = UDim2.new(0, 363, 0, 42)
+                    ArrowImg.Rotation = 0
                 end
                 droptog = not droptog
                 wait(0.2)
@@ -755,8 +851,8 @@ function QuickHacksUI:Window(text, preset, closebind)
                         droptog = false
                         DropdownTitle.Text = text .. " - " .. v
                         pcall(callback, v)
-                        Dropdown:TweenSize(UDim2.new(0, 363, 0, 42), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
-                        TweenService:Create(ArrowImg, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Rotation = 0}):Play()
+                        Dropdown.Size = UDim2.new(0, 363, 0, 42)
+                        ArrowImg.Rotation = 0
                         wait(0.2)
                         Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
                     end)
@@ -892,11 +988,11 @@ function QuickHacksUI:Window(text, preset, closebind)
                 if ColorPickerToggled == false then
                     ColorSelection.Visible = true
                     HueSelection.Visible = true
-                    Colorpicker:TweenSize(UDim2.new(0, 363, 0, 132), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
+                    Colorpicker.Size = UDim2.new(0, 363, 0, 132)
                 else
                     ColorSelection.Visible = false
                     HueSelection.Visible = false
-                    Colorpicker:TweenSize(UDim2.new(0, 363, 0, 42), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
+                    Colorpicker.Size = UDim2.new(0, 363, 0, 42)
                 end
                 ColorPickerToggled = not ColorPickerToggled
                 wait(0.2)
@@ -913,7 +1009,7 @@ function QuickHacksUI:Window(text, preset, closebind)
                 if ColorPickerToggled then
                     local ColorX = math.clamp((input.Position.X - Color.AbsolutePosition.X) / Color.AbsoluteSize.X, 0, 1)
                     local ColorY = math.clamp((input.Position.Y - Color.AbsolutePosition.Y) / Color.AbsoluteSize.Y, 0, 1)
-                    TweenService:Create(ColorSelection, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(ColorX, 0, ColorY, 0)}):Play()
+                    ColorSelection.Position = UDim2.new(ColorX, 0, ColorY, 0)
                     ColorS = ColorX
                     ColorV = 1 - ColorY
                     UpdateColorPicker()
@@ -923,7 +1019,7 @@ function QuickHacksUI:Window(text, preset, closebind)
             local function moveHue(input)
                 if ColorPickerToggled then
                     local HueY = math.clamp((input.Position.Y - Hue.AbsolutePosition.Y) / Hue.AbsoluteSize.Y, 0, 1)
-                    TweenService:Create(HueSelection, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.48, 0, HueY, 0)}):Play()
+                    HueSelection.Position = UDim2.new(0.48, 0, HueY, 0)
                     ColorH = 1 - HueY
                     UpdateColorPicker()
                 end
