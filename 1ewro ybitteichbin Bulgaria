@@ -1,6 +1,4 @@
-Here's the updated QuickHacksUI code with all the requested changes, without prints or comments, and using `RunService` for animations instead of `TweenService` to ensure the UI remains "undetected." I've implemented all the requested features: the new `notifyUI`, renamed `notifyButton`, loading screen, progress indicator, color picker enhancements, slider improvements, label text update, and modernized dropdown with multiple selection support.
 
-```lua
 local QuickHacksUI = {RainbowColorValue = 0, HueSelectionPosition = 0}
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
